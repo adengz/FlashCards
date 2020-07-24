@@ -1,8 +1,8 @@
 import React from 'react';
 import { Platform } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import DeckList from '../components/DeckList';
 import Settings from '../components/Settings';
@@ -33,14 +33,25 @@ const screens = {
   },
 };
 
-export default function TabNavigator() {
+export function TabNavigator() {
   return (
-    <NavigationContainer>
-      <Tab.Navigator>
-        {Object.entries(screens).map(([k, v]) => (
-          <Tab.Screen key={k} {...v} />
-        ))}
-      </Tab.Navigator>
-    </NavigationContainer>
+    <Tab.Navigator initialRouteName="MyDecks">
+      {Object.entries(screens).map(([k, v]) => (
+        <Tab.Screen key={k} {...v} />
+      ))}
+    </Tab.Navigator>
   );
+}
+
+export function getHeaderTitle(route) {
+  const routeName = getFocusedRouteNameFromRoute(route) ?? 'My Decks';
+
+  switch (routeName) {
+    case 'My Decks':
+      return 'Flash⚡Cards';
+    case 'Settings':
+      return 'Settings';
+    default:
+      return 'Home';
+  }
 }
