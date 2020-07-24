@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, ScrollView, Switch, StyleSheet } from 'react-native';
-import { useTheme, List, Divider } from 'react-native-paper';
+import { View, ScrollView, StyleSheet } from 'react-native';
+import { useTheme, List, Switch, Divider } from 'react-native-paper';
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleDark } from '../redux/actions/settings';
 import { Styles } from '../styles/stylesheet';
