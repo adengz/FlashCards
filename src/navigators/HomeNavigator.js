@@ -42,9 +42,7 @@ const tabNavProps = {
 
 export function TabNavigator() {
   const { dark } = useTheme();
-  if (dark) {
-    tabNavProps.tabBarOptions.tabStyle = { backgroundColor: '#272727' };
-  }
+  tabNavProps.tabBarOptions.tabStyle = dark ? { backgroundColor: '#272727' } : null;
 
   return (
     <Tab.Navigator {...tabNavProps}>
