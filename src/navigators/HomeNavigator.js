@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
+import { useTheme } from 'react-native-paper';
 import DeckList from '../components/DeckList';
 import Settings from '../components/Settings';
 
@@ -33,9 +34,20 @@ const screens = {
   },
 };
 
+const tabNavProps = {
+  initialRouteName: 'My Decks',
+  tabBarOptions: { inactiveTintColor: '#939393' },
+  // tabBarOptions only applies on createBottomTabNavigator, i.e., iOS only
+};
+
 export function TabNavigator() {
+  const { dark } = useTheme();
+  if (dark) {
+    tabNavProps.tabBarOptions.tabStyle = { backgroundColor: '#272727' };
+  }
+
   return (
-    <Tab.Navigator initialRouteName="MyDecks">
+    <Tab.Navigator {...tabNavProps}>
       {Object.entries(screens).map(([k, v]) => (
         <Tab.Screen key={k} {...v} />
       ))}

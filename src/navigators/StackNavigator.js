@@ -1,7 +1,9 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { useTheme } from 'react-native-paper';
 import { TabNavigator, getHeaderTitle } from './HomeNavigator';
+import { white } from '../styles/palette';
 
 const Stack = createStackNavigator();
 
@@ -15,10 +17,22 @@ const screens = {
   },
 };
 
+const stackNavProps = {
+  initialRouteName: 'Home',
+  screenOptions: {
+    headerTitleStyle: { color: white },
+  },
+};
+
 export default function StackNavigator() {
+  const theme = useTheme();
+  const { dark, colors } = theme;
+  stackNavProps.screenOptions.headerStyle = {
+    backgroundColor: dark ? colors.surface : colors.primary,
+  };
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
+    <NavigationContainer theme={theme}>
+      <Stack.Navigator {...stackNavProps}>
         {Object.entries(screens).map(([k, v]) => (
           <Stack.Screen key={k} {...v} />
         ))}
