@@ -1,7 +1,7 @@
 import React from 'react';
+import { useTheme } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { useTheme } from 'react-native-paper';
 import { TabNavigator, getHeaderTitle } from './HomeNavigator';
 import { white } from '../styles/palette';
 

@@ -1,8 +1,7 @@
 import React from 'react';
-import { StyleSheet, ScrollView, Switch } from 'react-native';
-import { useSelector, useDispatch } from 'react-redux';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { View, ScrollView, Switch, StyleSheet } from 'react-native';
 import { useTheme, List, Divider } from 'react-native-paper';
+import { useSelector, useDispatch } from 'react-redux';
 import { toggleDark } from '../redux/actions/settings';
 import { Styles } from '../styles/stylesheet';
 import { red } from '../styles/palette';
@@ -22,7 +21,7 @@ export default function Settings() {
   };
 
   return (
-    <SafeAreaView style={Styles.container}>
+    <View style={Styles.container}>
       <ScrollView>
         <List.Section>
           <List.Subheader>Appearances</List.Subheader>
@@ -43,7 +42,7 @@ export default function Settings() {
           />
         </List.Section>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
 

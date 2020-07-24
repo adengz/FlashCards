@@ -7,7 +7,7 @@ export const black = '#000000';
 export const green = '#53A451';
 export const red = '#CC444A';
 
-export const colorMap = [
+export const lightColorMap = [
   'lightblue',
   'lightcoral',
   'lightcyan',
@@ -18,4 +18,17 @@ export const colorMap = [
   'lightsalmon',
   'lightsteelblue',
   'lightyellow',
+];
+
+export const darkColorMap = [
+  'darkblue',
+  'darkmagenta',
+  'darkcyan',
+  'darkorange',
+  'darkgreen',
+  'darkorchid',
+  'darkslateblue',
+  'darkred',
+  'darkslategrey',
+  'darkviolet',
 ];

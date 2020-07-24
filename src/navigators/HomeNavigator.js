@@ -1,10 +1,10 @@
 import React from 'react';
 import { Platform } from 'react-native';
+import { useTheme } from 'react-native-paper';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
-import { useTheme } from 'react-native-paper';
 import DeckList from '../components/DeckList';
 import Settings from '../components/Settings';
 

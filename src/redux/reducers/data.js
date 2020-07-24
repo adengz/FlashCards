@@ -1,5 +1,5 @@
 import { CLEAR_DATA } from '../actions/data';
-import { colorMap } from '../../styles/palette';
+import { lightColorMap as colorMap } from '../../styles/palette';
 
 const defaultState = {};
 const now = Date.now();
