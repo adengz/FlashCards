@@ -7,6 +7,8 @@ import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import DeckList from '../components/DeckList';
 import Settings from '../components/Settings';
+import NewDeck from '../components/NewDeck';
+import { white } from '../styles/palette';
 
 const { OS } = Platform;
 const Tab = OS === 'ios' ? createBottomTabNavigator() : createMaterialBottomTabNavigator();
@@ -23,6 +25,16 @@ const screens = {
       ),
     },
   },
+  NewDeck:
+    OS === 'android'
+      ? null
+      : {
+          name: 'New Deck',
+          component: NewDeck,
+          options: {
+            tabBarIcon: () => <Ionicons name="ios-add-circle" size={iconSize} color={white} />,
+          },
+        },
   Settings: {
     name: 'Settings',
     component: Settings,
@@ -46,9 +58,11 @@ export function TabNavigator() {
 
   return (
     <Tab.Navigator {...tabNavProps}>
-      {Object.entries(screens).map(([k, v]) => (
-        <Tab.Screen key={k} {...v} />
-      ))}
+      {Object.entries(screens)
+        .filter(([k, v]) => v !== null)
+        .map(([k, v]) => (
+          <Tab.Screen key={k} {...v} />
+        ))}
     </Tab.Navigator>
   );
 }
@@ -59,6 +73,8 @@ export function getHeaderTitle(route) {
   switch (routeName) {
     case 'My Decks':
       return 'Flash⚡Cards';
+    case 'New Deck':
+      return 'Create a New Deck';
     case 'Settings':
       return 'Settings';
     default:
