@@ -1,8 +1,10 @@
 import React from 'react';
+import { Platform } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { TabNavigator, getHeaderTitle } from './HomeNavigator';
+import NewDeck from '../components/NewDeck';
 import { white } from '../styles/palette';
 
 const Stack = createStackNavigator();
@@ -15,6 +17,14 @@ const screens = {
       headerTitle: getHeaderTitle(route),
     }),
   },
+  NewDeck:
+    Platform.OS === 'ios'
+      ? null
+      : {
+          name: 'New Deck',
+          component: NewDeck,
+          options: { title: 'Create a New Deck' },
+        },
 };
 
 const stackNavProps = {
@@ -33,9 +43,11 @@ export default function StackNavigator() {
   return (
     <NavigationContainer theme={theme}>
       <Stack.Navigator {...stackNavProps}>
-        {Object.entries(screens).map(([k, v]) => (
-          <Stack.Screen key={k} {...v} />
-        ))}
+        {Object.entries(screens)
+          .filter(([k, v]) => v !== null)
+          .map(([k, v]) => (
+            <Stack.Screen key={k} {...v} />
+          ))}
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { View, FlatList, TouchableOpacity, Dimensions, StyleSheet } from 'react-native';
+import { View, FlatList, TouchableOpacity, Platform, Dimensions, StyleSheet } from 'react-native';
 import { Paragraph, withTheme } from 'react-native-paper';
 import { connect } from 'react-redux';
 import CardFlip from 'react-native-card-flip';
+import NewDeckFAB from './NewDeckFAB';
 import { Styles } from '../styles/stylesheet';
 import { lightColorMap, darkColorMap } from '../styles/palette';
 
@@ -39,6 +40,7 @@ class DeckList extends Component {
             </View>
           }
         />
+        {Platform.OS === 'android' && <NewDeckFAB />}
       </View>
     );
   }

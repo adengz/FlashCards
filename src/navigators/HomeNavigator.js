@@ -1,6 +1,5 @@
 import React from 'react';
 import { Platform } from 'react-native';
-import { useTheme } from 'react-native-paper';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
@@ -8,7 +7,7 @@ import { Ionicons } from '@expo/vector-icons';
 import DeckList from '../components/DeckList';
 import Settings from '../components/Settings';
 import NewDeck from '../components/NewDeck';
-import { white } from '../styles/palette';
+import NewDeckFAB from '../components/NewDeckFAB';
 
 const { OS } = Platform;
 const Tab = OS === 'ios' ? createBottomTabNavigator() : createMaterialBottomTabNavigator();
@@ -32,7 +31,7 @@ const screens = {
           name: 'New Deck',
           component: NewDeck,
           options: {
-            tabBarIcon: () => <Ionicons name="ios-add-circle" size={iconSize} color={white} />,
+            tabBarButton: () => <NewDeckFAB />,
           },
         },
   Settings: {
@@ -53,9 +52,6 @@ const tabNavProps = {
 };
 
 export function TabNavigator() {
-  const { dark } = useTheme();
-  tabNavProps.tabBarOptions.tabStyle = dark ? { backgroundColor: '#272727' } : null;
-
   return (
     <Tab.Navigator {...tabNavProps}>
       {Object.entries(screens)
