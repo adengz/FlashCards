@@ -25,8 +25,6 @@ const Loader = () => {
 const store = createStore(reducer, applyMiddleware(logger));
 
 export default function App() {
-  const theme = lightTheme;
-  const { statusBar } = theme.colors;
   return (
     <StoreProvider store={store}>
       <SafeAreaProvider>
