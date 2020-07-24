@@ -1,6 +1,18 @@
 import { CLEAR_DATA } from '../actions/data';
+import { colorMap } from '../../styles/palette';
 
-export default function data(state = {}, action) {
+const defaultState = {};
+const now = Date.now();
+for (let i = 0; i < colorMap.length; i++) {
+  defaultState[colorMap[i]] = {
+    id: colorMap[i],
+    title: colorMap[i],
+    timestamp: now + i,
+    questions: [],
+  };
+}
+
+export default function data(state = defaultState, action) {
   switch (action.type) {
     case CLEAR_DATA:
       return {};
