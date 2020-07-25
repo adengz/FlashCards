@@ -3,6 +3,7 @@ import { View, FlatList, TouchableOpacity, Platform, Dimensions, StyleSheet } fr
 import { Paragraph, withTheme } from 'react-native-paper';
 import { connect } from 'react-redux';
 import CardFlip from 'react-native-card-flip';
+import DeckCover from './DeckCover';
 import NewDeckFAB from './NewDeckFAB';
 import { Styles } from '../styles/stylesheet';
 import { lightColorMap, darkColorMap } from '../styles/palette';
@@ -27,7 +28,7 @@ class DeckList extends Component {
                   style={[styles.card, { backgroundColor: colorMap[index % colorMap.length] }]}
                   onPress={() => this[`card${index}`].jiggle()}
                 >
-                  <Paragraph>{item.title}</Paragraph>
+                  <DeckCover id={item.id} />
                 </TouchableOpacity>
                 <View style={styles.card} />
               </CardFlip>
