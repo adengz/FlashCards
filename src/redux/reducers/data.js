@@ -1,4 +1,4 @@
-import { CLEAR_DATA } from '../actions/data';
+import { ADD_DECK, CLEAR_DATA } from '../actions/data';
 import { lightColorMap as colorMap } from '../../styles/palette';
 
 const defaultState = { decks: {}, cards: {} };
@@ -8,12 +8,25 @@ for (let i = 0; i < colorMap.length; i++) {
     id: colorMap[i],
     title: colorMap[i],
     timestamp: now + i,
-    questions: [],
+    cards: [],
   };
 }
 
 export default function data(state = defaultState, action) {
   switch (action.type) {
+    case ADD_DECK:
+      return {
+        ...state,
+        decks: {
+          ...state.decks,
+          [action.deckId]: {
+            id: action.deckId,
+            title: action.title,
+            timestamp: action.timestamp,
+            cards: [],
+          },
+        },
+      };
     case CLEAR_DATA:
       return { decks: {}, cards: {} };
     default:
