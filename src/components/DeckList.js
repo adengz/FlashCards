@@ -10,7 +10,7 @@ import { lightColorMap, darkColorMap } from '../styles/palette';
 class DeckList extends Component {
   render() {
     const {
-      decks,
+      deckList,
       theme: { dark },
     } = this.props;
     const colorMap = dark ? darkColorMap : lightColorMap;
@@ -18,7 +18,7 @@ class DeckList extends Component {
     return (
       <View style={[Styles.container, { alignItems: 'center' }]}>
         <FlatList
-          data={decks}
+          data={deckList}
           renderItem={({ item, index }) => {
             return (
               <CardFlip style={styles.cardContainer} ref={(card) => (this[`card${index}`] = card)}>
@@ -47,10 +47,10 @@ class DeckList extends Component {
 }
 
 const mapStateToProps = ({ data }) => {
-  const decks = Object.values(data);
-  decks.sort((a, b) => a.timestamp - b.timestamp);
+  const deckList = Object.values(data.decks);
+  deckList.sort((a, b) => a.timestamp - b.timestamp);
 
-  return { decks };
+  return { deckList };
 };
 
 export default withTheme(connect(mapStateToProps)(DeckList));
