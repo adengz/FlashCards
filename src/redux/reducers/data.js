@@ -1,5 +1,5 @@
 import { ADD_DECK, CLEAR_DATA } from '../actions/data';
-import { lightColorMap as colorMap } from '../../styles/palette';
+import { colorMap } from '../../styles/palette';
 
 const defaultState = { decks: {}, cards: {} };
 const now = Date.now();

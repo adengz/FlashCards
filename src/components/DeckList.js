@@ -6,29 +6,29 @@ import CardFlip from 'react-native-card-flip';
 import DeckCover from './DeckCover';
 import NewDeckFAB from './NewDeckFAB';
 import { Styles } from '../styles/stylesheet';
-import { lightColorMap, darkColorMap } from '../styles/palette';
+import { colorMap } from '../styles/palette';
 
 class DeckList extends Component {
   render() {
     const {
       deckList,
-      theme: { dark },
+      theme: { dark, colors },
     } = this.props;
-    const colorMap = dark ? darkColorMap : lightColorMap;
 
     return (
       <View style={[Styles.container, { alignItems: 'center' }]}>
         <FlatList
           data={deckList}
           renderItem={({ item, index }) => {
+            const color = colorMap[index % colorMap.length];
             return (
               <CardFlip style={styles.cardContainer} ref={(card) => (this[`card${index}`] = card)}>
                 <TouchableOpacity
                   activeOpacity={1}
-                  style={[styles.card, { backgroundColor: colorMap[index % colorMap.length] }]}
+                  style={[styles.card, { backgroundColor: dark ? colors.surface : color }]}
                   onPress={() => this[`card${index}`].jiggle()}
                 >
-                  <DeckCover id={item.id} />
+                  <DeckCover id={item.id} titleColor={dark ? color : colors.text} />
                 </TouchableOpacity>
                 <View style={styles.card} />
               </CardFlip>
