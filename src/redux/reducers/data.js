@@ -4,11 +4,11 @@ import { lightColorMap as colorMap } from '../../styles/palette';
 const defaultState = { decks: {}, cards: {} };
 const now = Date.now();
 for (let i = 0; i < colorMap.length; i++) {
-  defaultState.decks[colorMap[i]] = {
-    id: colorMap[i],
+  defaultState.decks[`deck_${colorMap[i]}`] = {
+    id: `deck_${colorMap[i]}`,
     title: colorMap[i],
     timestamp: now + i,
-    cards: [],
+    cards: Array(colorMap[i].length),
   };
 }
 
