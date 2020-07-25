@@ -11,7 +11,7 @@ class DeckList extends Component {
   render() {
     const {
       deckList,
-      theme: { dark, colors },
+      theme: { dark, colors, roundness },
     } = this.props;
 
     return (
@@ -24,7 +24,10 @@ class DeckList extends Component {
               <CardFlip style={styles.cardContainer} ref={(card) => (this[`card${index}`] = card)}>
                 <TouchableOpacity
                   activeOpacity={1}
-                  style={[styles.card, { backgroundColor: dark ? colors.surface : color }]}
+                  style={[
+                    styles.card,
+                    { backgroundColor: dark ? colors.surface : color, borderRadius: roundness },
+                  ]}
                   onPress={() => this[`card${index}`].jiggle()}
                 >
                   <DeckCover id={item.id} titleColor={dark ? color : colors.text} />
@@ -70,7 +73,6 @@ const styles = StyleSheet.create({
   card: {
     width: '100%',
     height: '100%',
-    borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 4, // android only
