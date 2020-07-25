@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { View, FlatList, TouchableOpacity, Platform, Dimensions, StyleSheet } from 'react-native';
-import { Paragraph, withTheme } from 'react-native-paper';
+import { Paragraph, FAB, withTheme } from 'react-native-paper';
 import { connect } from 'react-redux';
 import CardFlip from 'react-native-card-flip';
 import DeckCover from './DeckCover';
-import NewDeckFAB from './NewDeckFAB';
 import { Styles } from '../styles/stylesheet';
 import { colorMap } from '../styles/palette';
 
@@ -41,7 +40,12 @@ class DeckList extends Component {
             </View>
           }
         />
-        {Platform.OS === 'android' && <NewDeckFAB />}
+        <FAB
+          style={[styles.fab, { backgroundColor: colors.primary }]}
+          small={false}
+          icon="plus"
+          onPress={() => console.log('show modal')}
+        />
       </View>
     );
   }
@@ -74,5 +78,18 @@ const styles = StyleSheet.create({
   msgContainer: {
     alignSelf: 'center',
     alignItems: 'center',
+  },
+  fab: {
+    position: 'absolute',
+    bottom: 0,
+    margin: 16,
+    ...Platform.select({
+      android: {
+        right: 0,
+      },
+      ios: {
+        elevation: 0,
+      },
+    }),
   },
 });
