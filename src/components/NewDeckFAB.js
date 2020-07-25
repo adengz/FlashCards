@@ -1,13 +1,14 @@
 import React from 'react';
 import { StyleSheet, Platform, Dimensions } from 'react-native';
+import { useTheme, FAB } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
-import { FAB } from 'react-native-paper';
 
 export default function NewDeckFAB() {
   const navigation = useNavigation();
+  const { primary } = useTheme().colors;
   return (
     <FAB
-      style={styles.fab}
+      style={[styles.fab, { backgroundColor: primary }]}
       small={false}
       icon="plus"
       onPress={() => navigation.navigate('New Deck')}
