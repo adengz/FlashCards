@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { View, FlatList, TouchableOpacity, Dimensions, StyleSheet } from 'react-native';
-import { withTheme } from 'react-native-paper';
+import { Headline, Subheading, withTheme } from 'react-native-paper';
 import { connect } from 'react-redux';
 import CardFlip from 'react-native-card-flip';
-import DeckCover from './DeckCover';
 import { Styles } from '../styles/stylesheet';
-import { colorMap } from '../styles/palette';
+import { colorMap, darkGray } from '../styles/palette';
 
 class DeckList extends Component {
   render() {
@@ -13,6 +12,7 @@ class DeckList extends Component {
       deckList,
       theme: { dark, colors, roundness },
     } = this.props;
+    styles.title = { fontWeight: dark ? 'bold' : 'normal' };
 
     return (
       <View style={[Styles.container, { alignItems: 'center' }]}>
@@ -30,7 +30,14 @@ class DeckList extends Component {
                   ]}
                   onPress={() => this[`card${index}`].jiggle()}
                 >
-                  <DeckCover id={item.id} titleColor={dark ? color : colors.text} />
+                  <View style={styles.coverContainer}>
+                    <Headline style={[styles.title, { color: dark ? color : colors.text }]}>
+                      {item.title}
+                    </Headline>
+                    <Subheading style={styles.stats}>
+                      {getFormattedStats(item.cards.length)}
+                    </Subheading>
+                  </View>
                 </TouchableOpacity>
                 <View style={styles.card} />
               </CardFlip>
@@ -41,6 +48,8 @@ class DeckList extends Component {
     );
   }
 }
+
+const getFormattedStats = (count) => `${count} card${count !== 1 && 's'}`;
 
 const mapStateToProps = ({ data }) => {
   const deckList = Object.values(data.decks);
@@ -64,5 +73,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 4, // android only
+  },
+  coverContainer: {
+    alignItems: 'center',
+  },
+  stats: {
+    color: darkGray,
   },
 });
