@@ -1,10 +1,10 @@
 import React from 'react';
 import { StatusBar } from 'react-native';
+import { Provider as PaperProvider } from 'react-native-paper';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider as StoreProvider, useSelector } from 'react-redux';
 import logger from 'redux-logger';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { Provider as PaperProvider } from 'react-native-paper';
 import reducer from './redux/reducers';
 import StackNavigator from './navigators/StackNavigator';
 import { darkTheme, lightTheme } from './styles/themes';

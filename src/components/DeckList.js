@@ -1,13 +1,29 @@
 import React, { Component } from 'react';
-import { View, FlatList, TouchableOpacity, Platform, Dimensions, StyleSheet } from 'react-native';
-import { Paragraph, FAB, withTheme } from 'react-native-paper';
+import {
+  View,
+  FlatList,
+  TouchableOpacity,
+  SafeAreaView,
+  Dimensions,
+  StyleSheet,
+} from 'react-native';
+import { IconButton, withTheme } from 'react-native-paper';
 import { connect } from 'react-redux';
 import CardFlip from 'react-native-card-flip';
 import DeckCover from './DeckCover';
 import { Styles } from '../styles/stylesheet';
-import { colorMap } from '../styles/palette';
+import { white, colorMap } from '../styles/palette';
 
 class DeckList extends Component {
+  componentDidMount() {
+    const { navigation } = this.props;
+    navigation.setOptions({
+      headerLeft: () => (
+        <IconButton icon="settings" color={white} onPress={() => navigation.navigate('Settings')} />
+      ),
+    });
+  }
+
   render() {
     const {
       deckList,
@@ -36,19 +52,8 @@ class DeckList extends Component {
               </CardFlip>
             );
           }}
-          ListEmptyComponent={
-            <View style={styles.msgContainer}>
-              <Paragraph>You don't have any decks now.</Paragraph>
-              <Paragraph>Create one and it will show up here.</Paragraph>
-            </View>
-          }
         />
-        <FAB
-          style={[styles.fab, { backgroundColor: colors.primary }]}
-          small={false}
-          icon="plus"
-          onPress={() => console.log('show modal')}
-        />
+        <SafeAreaView />
       </View>
     );
   }
@@ -76,22 +81,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 4, // android only
-  },
-  msgContainer: {
-    alignSelf: 'center',
-    alignItems: 'center',
-  },
-  fab: {
-    position: 'absolute',
-    bottom: 0,
-    margin: 16,
-    ...Platform.select({
-      android: {
-        right: 0,
-      },
-      ios: {
-        elevation: 0,
-      },
-    }),
   },
 });

@@ -12,9 +12,7 @@ const screens = {
   DeckList: {
     name: 'DeckList',
     component: DeckList,
-    // options: ({ route }) => ({
-    //   headerTitle: getHeaderTitle(route),
-    // }),
+    options: { headerTitle: 'Flash⚡Cards' },
   },
   Settings: {
     name: 'Settings',
@@ -26,7 +24,7 @@ const screens = {
 const stackNavProps = {
   initialRouteName: 'DeckList',
   screenOptions: {
-    headerTitleStyle: { color: white },
+    headerTintColor: white,
   },
 };
 
