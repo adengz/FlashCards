@@ -1,16 +1,14 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useTheme, TextInput, IconButton } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
 import { addDeck } from '../redux/actions/data';
 import { generateUID } from '../utils/helpers';
-import { gray } from '../styles/palette';
 
 const iconSize = 60;
 
-export default function NewDeck({ postSubmit = () => {} }) {
+export function NewDeckAndroid() {
   const [title, setTitle] = useState('');
-  const inputTitleRef = useRef(null);
   const {
     colors: { primary },
   } = useTheme();
@@ -26,25 +24,16 @@ export default function NewDeck({ postSubmit = () => {} }) {
     // persist storage
     dispatch(addDeck({ deckId, title, timestamp }));
     clear();
-    postSubmit();
   };
 
   return (
     <View style={styles.container}>
       <TextInput
-        ref={inputTitleRef}
         style={styles.input}
-        mode="outlined"
         label="Add a new deck"
         placeholder="Title"
         onChangeText={(text) => setTitle(text)}
         value={title}
-        right={
-          title !== '' &&
-          inputTitleRef.current.isFocused() && (
-            <TextInput.Icon name="close-circle" color={gray} onPress={clear} />
-          )
-        }
       />
       <IconButton
         style={styles.btn}
