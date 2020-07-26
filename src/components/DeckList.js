@@ -1,29 +1,13 @@
 import React, { Component } from 'react';
-import {
-  View,
-  FlatList,
-  TouchableOpacity,
-  SafeAreaView,
-  Dimensions,
-  StyleSheet,
-} from 'react-native';
-import { IconButton, withTheme } from 'react-native-paper';
+import { View, FlatList, TouchableOpacity, Dimensions, StyleSheet } from 'react-native';
+import { withTheme } from 'react-native-paper';
 import { connect } from 'react-redux';
 import CardFlip from 'react-native-card-flip';
 import DeckCover from './DeckCover';
 import { Styles } from '../styles/stylesheet';
-import { white, colorMap } from '../styles/palette';
+import { colorMap } from '../styles/palette';
 
 class DeckList extends Component {
-  componentDidMount() {
-    const { navigation } = this.props;
-    navigation.setOptions({
-      headerLeft: () => (
-        <IconButton icon="settings" color={white} onPress={() => navigation.navigate('Settings')} />
-      ),
-    });
-  }
-
   render() {
     const {
       deckList,
@@ -53,7 +37,6 @@ class DeckList extends Component {
             );
           }}
         />
-        <SafeAreaView />
       </View>
     );
   }

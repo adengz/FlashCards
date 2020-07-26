@@ -2,16 +2,16 @@ import React from 'react';
 import { useTheme } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import DeckList from '../components/DeckList';
+import Home from '../components/Home';
 import Settings from '../components/Settings';
 import { white } from '../styles/palette';
 
 const Stack = createStackNavigator();
 
 const screens = {
-  DeckList: {
-    name: 'DeckList',
-    component: DeckList,
+  Home: {
+    name: 'Home',
+    component: Home,
     options: { headerTitle: 'Flash⚡Cards' },
   },
   Settings: {
@@ -22,7 +22,7 @@ const screens = {
 };
 
 const stackNavProps = {
-  initialRouteName: 'DeckList',
+  initialRouteName: 'Home',
   screenOptions: {
     headerTintColor: white,
   },
