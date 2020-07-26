@@ -2,23 +2,29 @@ import React from 'react';
 import { useTheme } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { TabNavigator, getHeaderTitle } from './HomeNavigator';
+import DeckList from '../components/DeckList';
+import Settings from '../components/Settings';
 import { white } from '../styles/palette';
 
 const Stack = createStackNavigator();
 
 const screens = {
-  Home: {
-    name: 'Home',
-    component: TabNavigator,
-    options: ({ route }) => ({
-      headerTitle: getHeaderTitle(route),
-    }),
+  DeckList: {
+    name: 'DeckList',
+    component: DeckList,
+    // options: ({ route }) => ({
+    //   headerTitle: getHeaderTitle(route),
+    // }),
+  },
+  Settings: {
+    name: 'Settings',
+    component: Settings,
+    options: { title: 'Settings' },
   },
 };
 
 const stackNavProps = {
-  initialRouteName: 'Home',
+  initialRouteName: 'DeckList',
   screenOptions: {
     headerTitleStyle: { color: white },
   },
