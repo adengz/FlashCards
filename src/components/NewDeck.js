@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useTheme, TextInput, IconButton } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
@@ -10,6 +10,7 @@ const iconSize = 60;
 
 export default function NewDeck({ postSubmit = () => {} }) {
   const [title, setTitle] = useState('');
+  const inputTitleRef = useRef(null);
   const {
     colors: { primary },
   } = useTheme();
@@ -31,13 +32,19 @@ export default function NewDeck({ postSubmit = () => {} }) {
   return (
     <View style={styles.container}>
       <TextInput
+        ref={inputTitleRef}
         style={styles.input}
         mode="outlined"
         label="Add a new deck"
         placeholder="Title"
         onChangeText={(text) => setTitle(text)}
         value={title}
-        // right={<TextInput.Icon name="close-circle" color={gray} onPress={clear} />}
+        right={
+          title !== '' &&
+          inputTitleRef.current.isFocused() && (
+            <TextInput.Icon name="close-circle" color={gray} onPress={clear} />
+          )
+        }
       />
       <IconButton
         style={styles.btn}
