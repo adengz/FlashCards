@@ -28,7 +28,7 @@ export default function NewDeckAndroid() {
         style={styles.input}
         label="Add a new deck"
         placeholder="Title"
-        onChangeText={(text) => setTitle(text)}
+        onChangeText={(value) => setTitle(value)}
         value={title}
       />
       <IconButton

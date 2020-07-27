@@ -11,7 +11,6 @@ import { Styles } from '../styles/stylesheet';
 import { white } from '../styles/palette';
 
 export default function Home() {
-  const [newDeckModalVisible, setNewDeckModalVisible] = useState(false);
   const [moreMenuVisible, setMoreMenuVisible] = useState(false);
   const [sortingOptionsVisible, setSortingOptionsVisible] = useState(false);
 
@@ -39,14 +38,6 @@ export default function Home() {
       ),
       headerRight: () => (
         <View style={styles.actionBtnRow}>
-          {Platform.OS === 'ios' && (
-            <IconButton
-              style={styles.actionBtn}
-              icon="plus"
-              color={iconColor}
-              onPress={() => setNewDeckModalVisible(true)}
-            />
-          )}
           <IconButton
             style={styles.actionBtn}
             icon={`arrow-${descending ? 'down' : 'up'}-thick`}
@@ -59,7 +50,7 @@ export default function Home() {
             anchor={
               <IconButton
                 style={styles.actionBtn}
-                icon={`dots-${Platform.OS === 'ios' ? 'horizontal' : 'vertical'}`}
+                icon={`dots-${OS === 'ios' ? 'horizontal' : 'vertical'}`}
                 color={iconColor}
                 onPress={toggleMoreMenu}
               />
@@ -81,8 +72,9 @@ export default function Home() {
 
   return (
     <View style={Styles.container}>
+      {OS === 'ios' && <NewDeck />}
       <DeckList />
-      <NewDeck visible={newDeckModalVisible} hide={() => setNewDeckModalVisible(false)} />
+      {OS === 'android' && <NewDeck />}
       <DeckSortingOptions
         visible={sortingOptionsVisible}
         hide={() => setSortingOptionsVisible(false)}
@@ -92,6 +84,7 @@ export default function Home() {
 }
 
 const iconColor = white;
+const { OS } = Platform;
 
 const styles = StyleSheet.create({
   actionBtnRow: {

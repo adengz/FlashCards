@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
-import Dialog from 'react-native-dialog';
+import { View, TextInput, StyleSheet } from 'react-native';
+import { useTheme, Button } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
 import { addDeck } from '../redux/actions/data';
 import { getNewDeckMetaData } from '../utils/helpers';
+import { gray } from '../styles/palette';
 
-export default function NewDeckIOS({ visible, hide }) {
+export default function NewDeckIOS() {
   const [title, setTitle] = useState('');
   const dispatch = useDispatch();
-
-  const exit = () => {
-    setTitle('');
-    hide();
-  };
+  const {
+    roundness,
+    colors: { surface, text },
+  } = useTheme();
 
   const submit = () => {
     const newDeckData = {
@@ -20,16 +21,47 @@ export default function NewDeckIOS({ visible, hide }) {
     };
     // persist storage
     dispatch(addDeck(newDeckData));
-    exit();
+    setTitle('');
   };
 
   return (
-    <Dialog.Container visible={visible} onBackdropPress={exit}>
-      <Dialog.Title>Add a new deck</Dialog.Title>
-      <Dialog.Description>Enter the title of your new deck</Dialog.Description>
-      <Dialog.Input value={title} onChangeText={(text) => setTitle(text)} placeholder="Title" />
-      <Dialog.Button label="Cancel" onPress={exit} />
-      <Dialog.Button label="Add" onPress={submit} disabled={title === ''} />
-    </Dialog.Container>
+    <View style={styles.container}>
+      <TextInput
+        style={[styles.input, { backgroundColor: surface, color: text, borderRadius: roundness }]}
+        placeholder="Title of new deck"
+        placeholderTextColor={gray}
+        onChangeText={(value) => setTitle(value)}
+        value={title}
+        clearButtonMode="while-editing"
+      />
+      <Button
+        style={styles.btn}
+        mode="contained"
+        icon="plus"
+        children="Add"
+        compact
+        uppercase={false}
+        onPress={submit}
+        disabled={title === ''}
+      />
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    paddingHorizontal: 15,
+    alignItems: 'center',
+  },
+  input: {
+    flex: 1,
+    margin: 5,
+    fontSize: 20,
+    height: 40,
+  },
+  btn: {
+    marginRight: 4,
+    elevation: 0,
+  },
+});
