@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
 import DeckList from './DeckList';
 import NewDeck from './NewDeck';
+import DeckSortingOptions from './DeckSortingOptions';
 import { reverseDeckOrder } from '../redux/actions/settings';
 import { Styles } from '../styles/stylesheet';
 import { white } from '../styles/palette';
@@ -12,8 +13,10 @@ import { white } from '../styles/palette';
 export default function Home() {
   const [newDeckModalVisible, setNewDeckModalVisible] = useState(false);
   const [moreMenuVisible, setMoreMenuVisible] = useState(false);
+  const [sortingOptionsVisible, setSortingOptionsVisible] = useState(false);
+
   const navigation = useNavigation();
-  const { by, descending } = useSelector(({ settings }) => settings.sortDecks);
+  const { descending } = useSelector(({ settings }) => settings.sortDecks);
   const dispatch = useDispatch();
 
   const toggleOrder = () => {
@@ -65,7 +68,10 @@ export default function Home() {
             <Menu.Item
               title="Sort decks by..."
               icon="sort"
-              onPress={() => console.log('open sorting options')}
+              onPress={() => {
+                toggleMoreMenu();
+                setSortingOptionsVisible(true);
+              }}
             />
           </Menu>
         </View>
@@ -77,6 +83,10 @@ export default function Home() {
     <View style={Styles.container}>
       <DeckList />
       <NewDeck visible={newDeckModalVisible} hide={() => setNewDeckModalVisible(false)} />
+      <DeckSortingOptions
+        visible={sortingOptionsVisible}
+        hide={() => setSortingOptionsVisible(false)}
+      />
     </View>
   );
 }

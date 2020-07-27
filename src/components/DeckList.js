@@ -54,7 +54,18 @@ const getFormattedStats = (count) => `${count} card${count !== 1 && 's'}`;
 const mapStateToProps = ({ settings, data }) => {
   const deckList = Object.values(data.decks);
   const { by, descending } = settings.sortDecks;
-  deckList.sort((a, b) => a.timestamp - b.timestamp);
+  let sortFunc;
+  switch (by) {
+    case 'title':
+      sortFunc = (a, b) => (a.title < b.title ? -1 : 1);
+      break;
+    case 'cards':
+      sortFunc = (a, b) => a.cards.length - b.cards.length;
+      break;
+    default:
+      sortFunc = (a, b) => a.timestamp - b.timestamp;
+  }
+  deckList.sort(sortFunc);
   if (descending) {
     deckList.reverse();
   }
