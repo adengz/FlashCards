@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, FlatList, TouchableOpacity, Dimensions, StyleSheet } from 'react-native';
+import { View, FlatList, TouchableWithoutFeedback, Dimensions, StyleSheet } from 'react-native';
 import { Headline, Subheading, withTheme } from 'react-native-paper';
 import { connect } from 'react-redux';
 import CardFlip from 'react-native-card-flip';
@@ -22,15 +22,13 @@ class DeckList extends Component {
             const color = colorMap[index % colorMap.length];
             return (
               <CardFlip style={styles.cardContainer} ref={(card) => (this[`card${index}`] = card)}>
-                <TouchableOpacity
-                  activeOpacity={1}
-                  style={[
-                    styles.card,
-                    { backgroundColor: dark ? colors.surface : color, borderRadius: roundness },
-                  ]}
-                  onPress={() => this[`card${index}`].jiggle()}
-                >
-                  <View style={styles.coverContainer}>
+                <TouchableWithoutFeedback onPress={() => this[`card${index}`].jiggle()}>
+                  <View
+                    style={[
+                      styles.card,
+                      { backgroundColor: dark ? colors.surface : color, borderRadius: roundness },
+                    ]}
+                  >
                     <Headline style={[styles.title, { color: dark ? color : colors.text }]}>
                       {item.title}
                     </Headline>
@@ -38,7 +36,7 @@ class DeckList extends Component {
                       {getFormattedStats(item.cards.length)}
                     </Subheading>
                   </View>
-                </TouchableOpacity>
+                </TouchableWithoutFeedback>
                 <View style={styles.card} />
               </CardFlip>
             );
@@ -88,9 +86,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 4, // android only
-  },
-  coverContainer: {
-    alignItems: 'center',
   },
   stats: {
     color: darkGray,
