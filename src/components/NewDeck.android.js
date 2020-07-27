@@ -4,12 +4,11 @@ import { useTheme, TextInput, IconButton } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
 import { addDeck } from '../redux/actions/data';
 import { getNewDeckMetaData } from '../utils/helpers';
+import { Styles } from '../styles/stylesheet';
 
 export default function NewDeckAndroid() {
   const [title, setTitle] = useState('');
-  const {
-    colors: { primary },
-  } = useTheme();
+  const { primary } = useTheme().colors;
   const dispatch = useDispatch();
 
   const submit = () => {
@@ -25,7 +24,7 @@ export default function NewDeckAndroid() {
   return (
     <View style={styles.container}>
       <TextInput
-        style={styles.input}
+        style={Styles.newDeckInput}
         label="Add a new deck"
         placeholder="Title"
         onChangeText={(value) => setTitle(value)}
@@ -33,9 +32,9 @@ export default function NewDeckAndroid() {
       />
       <IconButton
         style={styles.btn}
-        icon="plus-box"
         color={primary}
         size={iconSize}
+        icon="plus-box"
         onPress={submit}
         disabled={title === ''}
       />
@@ -47,14 +46,8 @@ const iconSize = 60;
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    paddingHorizontal: 15,
+    ...Styles.newDeckContainer,
     alignItems: 'baseline',
-  },
-  input: {
-    flex: 1,
-    margin: 5,
-    fontSize: 20,
   },
   btn: {
     margin: 0,

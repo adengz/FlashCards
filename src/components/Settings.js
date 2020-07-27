@@ -9,19 +9,18 @@ import { red } from '../styles/palette';
 export default function Settings() {
   const { dark } = useSelector(({ settings }) => settings);
   const dispatch = useDispatch();
+  const { surface } = useTheme().colors;
 
   const switchDark = () => {
     dispatch(toggleDark());
   };
-
-  const { surface } = useTheme().colors;
 
   styles.item = {
     backgroundColor: surface,
   };
 
   return (
-    <View style={Styles.container}>
+    <View style={Styles.mainContainer}>
       <ScrollView>
         <List.Section>
           <List.Subheader>Appearances</List.Subheader>
@@ -35,9 +34,9 @@ export default function Settings() {
         <List.Section>
           <List.Subheader>DANGER ZONE</List.Subheader>
           <List.Item
-            title="CLEAR DATA"
             style={styles.item}
             titleStyle={styles.titleDanger}
+            title="CLEAR DATA"
             onPress={() => console.log('CLEAR DATA')}
           />
         </List.Section>

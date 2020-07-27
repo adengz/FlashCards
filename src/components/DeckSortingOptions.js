@@ -20,7 +20,7 @@ export default function DeckSortingOptions({ visible, hide }) {
   return (
     <Portal>
       <Modal
-        contentContainerStyle={{ backgroundColor: surface, margin: 10, borderRadius: roundness }}
+        contentContainerStyle={{ backgroundColor: surface, borderRadius: roundness, margin: 10 }}
         visible={visible}
         onDismiss={hide}
       >

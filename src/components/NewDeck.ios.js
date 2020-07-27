@@ -4,6 +4,7 @@ import { useTheme, Button } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
 import { addDeck } from '../redux/actions/data';
 import { getNewDeckMetaData } from '../utils/helpers';
+import { Styles } from '../styles/stylesheet';
 import { gray } from '../styles/palette';
 
 export default function NewDeckIOS() {
@@ -28,19 +29,19 @@ export default function NewDeckIOS() {
     <View style={styles.container}>
       <TextInput
         style={[styles.input, { backgroundColor: surface, color: text, borderRadius: roundness }]}
-        placeholder="Title of new deck"
         placeholderTextColor={gray}
+        clearButtonMode="while-editing"
+        placeholder="Title of new deck"
         onChangeText={(value) => setTitle(value)}
         value={title}
-        clearButtonMode="while-editing"
       />
       <Button
         style={styles.btn}
         mode="contained"
-        icon="plus"
-        children="Add"
         compact
         uppercase={false}
+        icon="plus"
+        children="Add"
         onPress={submit}
         disabled={title === ''}
       />
@@ -50,14 +51,11 @@ export default function NewDeckIOS() {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    paddingHorizontal: 15,
+    ...Styles.newDeckContainer,
     alignItems: 'center',
   },
   input: {
-    flex: 1,
-    margin: 5,
-    fontSize: 20,
+    ...Styles.newDeckInput,
     height: 40,
   },
   btn: {

@@ -31,8 +31,8 @@ export default function Home() {
     navigation.setOptions({
       headerLeft: () => (
         <IconButton
-          icon="settings"
           color={iconColor}
+          icon="settings"
           onPress={() => navigation.navigate('Settings')}
         />
       ),
@@ -40,8 +40,8 @@ export default function Home() {
         <View style={styles.actionBtnRow}>
           <IconButton
             style={styles.actionBtn}
-            icon={`arrow-${descending ? 'down' : 'up'}-thick`}
             color={iconColor}
+            icon={`arrow-${descending ? 'down' : 'up'}-thick`}
             onPress={toggleOrder}
           />
           <Menu
@@ -50,8 +50,8 @@ export default function Home() {
             anchor={
               <IconButton
                 style={styles.actionBtn}
-                icon={`dots-${OS === 'ios' ? 'horizontal' : 'vertical'}`}
                 color={iconColor}
+                icon={`dots-${OS === 'ios' ? 'horizontal' : 'vertical'}`}
                 onPress={toggleMoreMenu}
               />
             }
@@ -71,7 +71,7 @@ export default function Home() {
   });
 
   return (
-    <View style={Styles.container}>
+    <View style={Styles.mainContainer}>
       {OS === 'ios' && <NewDeck />}
       <DeckList />
       {OS === 'android' && <NewDeck />}

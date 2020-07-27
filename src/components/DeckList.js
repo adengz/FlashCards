@@ -15,7 +15,7 @@ class DeckList extends Component {
     styles.title = { fontWeight: dark ? 'bold' : 'normal' };
 
     return (
-      <View style={[Styles.container, { alignItems: 'center' }]}>
+      <View style={[Styles.mainContainer, { alignItems: 'center' }]}>
         <FlatList
           data={deckList}
           renderItem={({ item, index }) => {
