@@ -3,27 +3,23 @@ import { View, StyleSheet } from 'react-native';
 import { useTheme, TextInput, IconButton } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
 import { addDeck } from '../redux/actions/data';
-import { generateUID } from '../utils/helpers';
+import { getNewDeckMetaData } from '../utils/helpers';
 
-const iconSize = 60;
-
-export function NewDeckAndroid() {
+export default function NewDeckAndroid() {
   const [title, setTitle] = useState('');
   const {
     colors: { primary },
   } = useTheme();
   const dispatch = useDispatch();
 
-  const clear = () => {
-    setTitle('');
-  };
-
   const submit = () => {
-    const deckId = generateUID('deck', 9);
-    const timestamp = Date.now();
+    const newDeckData = {
+      title,
+      ...getNewDeckMetaData(),
+    };
     // persist storage
-    dispatch(addDeck({ deckId, title, timestamp }));
-    clear();
+    dispatch(addDeck(newDeckData));
+    setTitle('');
   };
 
   return (
@@ -46,6 +42,8 @@ export function NewDeckAndroid() {
     </View>
   );
 }
+
+const iconSize = 60;
 
 const styles = StyleSheet.create({
   container: {
