@@ -51,9 +51,13 @@ class DeckList extends Component {
 
 const getFormattedStats = (count) => `${count} card${count !== 1 && 's'}`;
 
-const mapStateToProps = ({ data }) => {
+const mapStateToProps = ({ settings, data }) => {
   const deckList = Object.values(data.decks);
+  const { by, descending } = settings.sortDecks;
   deckList.sort((a, b) => a.timestamp - b.timestamp);
+  if (descending) {
+    deckList.reverse();
+  }
 
   return { deckList };
 };

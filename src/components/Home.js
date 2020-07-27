@@ -2,14 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { View, Platform, StyleSheet } from 'react-native';
 import { IconButton } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
+import { useSelector, useDispatch } from 'react-redux';
 import DeckList from './DeckList';
 import NewDeck from './NewDeck';
+import { reverseDeckOrder } from '../redux/actions/settings';
 import { Styles } from '../styles/stylesheet';
 import { white } from '../styles/palette';
 
 export default function Home() {
   const [newDeckModalVisible, setNewDeckModalVisible] = useState(false);
   const navigation = useNavigation();
+  const { by, descending } = useSelector(({ settings }) => settings.sortDecks);
+  const dispatch = useDispatch();
+
+  const toggleOrder = () => {
+    // persist storage
+    dispatch(reverseDeckOrder());
+  };
 
   useEffect(() => {
     navigation.setOptions({
@@ -29,10 +38,15 @@ export default function Home() {
               onPress={() => setNewDeckModalVisible(true)}
             />
           )}
+          <IconButton
+            icon={`arrow-${descending ? 'down' : 'up'}-thick`}
+            color={iconColor}
+            onPress={toggleOrder}
+          />
         </View>
       ),
     });
-  }, [navigation]);
+  });
 
   return (
     <View style={Styles.container}>
