@@ -3,7 +3,7 @@ import { View, ScrollView, StyleSheet } from 'react-native';
 import { useTheme, List, Switch, Divider } from 'react-native-paper';
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleDark } from '../redux/actions/settings';
-import { Styles } from '../styles/stylesheet';
+import Styles from '../styles/stylesheet';
 import { red } from '../styles/palette';
 
 export default function Settings() {

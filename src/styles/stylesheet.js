@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-export const Styles = StyleSheet.create({
+const Styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
   },
@@ -14,3 +14,5 @@ export const Styles = StyleSheet.create({
     fontSize: 20,
   },
 });
+
+export default Styles;

@@ -7,7 +7,7 @@ import DeckList from './DeckList';
 import NewDeck from './NewDeck';
 import DeckSortingOptions from './DeckSortingOptions';
 import { reverseDeckOrder } from '../redux/actions/settings';
-import { Styles } from '../styles/stylesheet';
+import Styles from '../styles/stylesheet';
 import { white } from '../styles/palette';
 
 export default function Home() {

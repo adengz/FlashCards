@@ -3,7 +3,7 @@ import { View, FlatList, TouchableWithoutFeedback, Dimensions, StyleSheet } from
 import { Headline, Subheading, withTheme } from 'react-native-paper';
 import { connect } from 'react-redux';
 import CardFlip from 'react-native-card-flip';
-import { Styles } from '../styles/stylesheet';
+import Styles from '../styles/stylesheet';
 import { colorMap, darkGray } from '../styles/palette';
 
 class DeckList extends Component {

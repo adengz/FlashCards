@@ -4,7 +4,7 @@ import { useTheme, Button } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
 import { addDeck } from '../redux/actions/data';
 import { getNewDeckMetaData } from '../utils/helpers';
-import { Styles } from '../styles/stylesheet';
+import Styles from '../styles/stylesheet';
 import { gray } from '../styles/palette';
 
 export default function NewDeckIOS() {
