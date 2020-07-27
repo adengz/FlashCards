@@ -1,14 +1,23 @@
 import { ADD_DECK, CLEAR_DATA } from '../actions/data';
 import { colorMap } from '../../styles/palette';
 
-const defaultState = { decks: {}, cards: {} };
 const now = Date.now();
+const defaultState = {
+  decks: {
+    colors: {
+      id: 'deck_colors',
+      title: 'colors',
+      timestamp: now,
+      cards: colorMap.map((color) => `card_${color}`),
+    },
+  },
+  cards: {},
+};
 for (let i = 0; i < colorMap.length; i++) {
-  defaultState.decks[`deck_${colorMap[i]}`] = {
-    id: `deck_${colorMap[i]}`,
-    title: colorMap[i],
-    timestamp: now + i,
-    cards: Array(colorMap[i].length),
+  defaultState.cards[`card_${colorMap[i]}`] = {
+    id: `card_${colorMap[i]}`,
+    question: colorMap[i],
+    answer: 'answer',
   };
 }
 
