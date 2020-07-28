@@ -11,10 +11,22 @@ import { white } from '../styles/palette';
 
 export default function Deck() {
   const { id } = useRoute().params;
-  const { title } = useSelector(({ data }) => data.decks[id]) || '';
+  const deck = useSelector(({ data }) => data.decks[id]);
+  let title;
+  let cards;
+  if (typeof deck === 'undefined') {
+    title = '';
+    cards = [];
+  } else {
+    ({ title, cards } = deck);
+  }
+
   const [displayTitle, setDisplayTitle] = useState(title);
   const titleBox = useRef(null);
   const [moreMenuVisible, setMoreMenuVisible] = useState(false);
+  const [selectedCards, setSelectedCards] = useState(
+    Object.fromEntries(cards.map((cardId) => [cardId, false]))
+  );
   const { text } = useTheme().colors;
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -44,6 +56,10 @@ export default function Deck() {
         dispatch(deleteDeck(id));
       },
     });
+  };
+
+  const toggleCheckbox = (cardId) => {
+    setSelectedCards({ ...selectedCards, [cardId]: !selectedCards[cardId] });
   };
 
   useEffect(() => {
@@ -94,7 +110,7 @@ export default function Deck() {
           onEndEditing={updateTitle}
         />
       </View>
-      <CardList id={id} />
+      <CardList id={id} selectedCards={selectedCards} toggleCheckbox={toggleCheckbox} />
       <SafeAreaView style={styles.actionBtnRow}>
         <Button
           {...actionBtnProps}
