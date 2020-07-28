@@ -50,11 +50,11 @@ export default function NewDeckIOS() {
 
 const styles = StyleSheet.create({
   container: {
-    ...Styles.newDeckContainer,
+    ...Styles.deckTitleContainer,
     alignItems: 'center',
   },
   input: {
-    ...Styles.newDeckInput,
+    ...Styles.deckTitleInput,
     height: 40,
   },
   btn: {

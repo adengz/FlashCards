@@ -4,11 +4,14 @@ const Styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
   },
-  newDeckContainer: {
+  actionBtnRow: {
+    flexDirection: 'row',
+  },
+  deckTitleContainer: {
     flexDirection: 'row',
     paddingHorizontal: 15,
   },
-  newDeckInput: {
+  deckTitleInput: {
     flex: 1,
     margin: 5,
     fontSize: 20,

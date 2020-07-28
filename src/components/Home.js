@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Platform, StyleSheet } from 'react-native';
+import { View, Platform } from 'react-native';
 import { IconButton, Menu } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
@@ -37,7 +37,7 @@ export default function Home() {
         />
       ),
       headerRight: () => (
-        <View style={styles.actionBtnRow}>
+        <View style={Styles.actionBtnRow}>
           <IconButton
             color={iconColor}
             icon={`arrow-${descending ? 'down' : 'up'}-thick`}
@@ -83,9 +83,3 @@ export default function Home() {
 
 const iconColor = white;
 const { OS } = Platform;
-
-const styles = StyleSheet.create({
-  actionBtnRow: {
-    flexDirection: 'row',
-  },
-});

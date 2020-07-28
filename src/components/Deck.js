@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { View, TextInput, SafeAreaView, StyleSheet, Platform } from 'react-native';
-import { useTheme, Menu, IconButton, Divider, Button } from 'react-native-paper';
+import { useTheme, Menu, IconButton, Text, Divider, Button } from 'react-native-paper';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateDeckTitle, deleteDeck } from '../redux/actions/data';
@@ -65,62 +65,74 @@ export default function Deck() {
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <Menu
-          visible={moreMenuVisible}
-          onDismiss={toggleMoreMenu}
-          anchor={
+        <View style={Styles.actionBtnRow}>
+          {Object.values(selectedCards).filter(Boolean).length > 0 && (
             <IconButton
-              color={white}
-              icon={`dots-${OS === 'ios' ? 'horizontal' : 'vertical'}`}
-              onPress={toggleMoreMenu}
+              color={iconColor}
+              icon="delete"
+              onPress={() => console.log('batch delete cards')}
             />
-          }
-        >
-          <Menu.Item
-            title="Rename deck"
-            icon="square-edit-outline"
-            onPress={() => {
-              toggleMoreMenu();
-              titleBox.current.focus();
-            }}
-          />
-          <Divider />
-          <Menu.Item
-            title="DELETE DECK"
-            icon="delete-outline"
-            onPress={() => {
-              toggleMoreMenu();
-              remove();
-            }}
-          />
-        </Menu>
+          )}
+          <Menu
+            visible={moreMenuVisible}
+            onDismiss={toggleMoreMenu}
+            anchor={
+              <IconButton
+                color={iconColor}
+                icon={`dots-${OS === 'ios' ? 'horizontal' : 'vertical'}`}
+                onPress={toggleMoreMenu}
+              />
+            }
+          >
+            <Menu.Item
+              title="Rename deck"
+              icon="square-edit-outline"
+              onPress={() => {
+                toggleMoreMenu();
+                titleBox.current.focus();
+              }}
+            />
+            <Divider />
+            <Menu.Item
+              title="DELETE DECK"
+              icon="delete"
+              onPress={() => {
+                toggleMoreMenu();
+                remove();
+              }}
+            />
+          </Menu>
+        </View>
       ),
     });
   });
 
   return (
     <View style={Styles.mainContainer}>
-      <View style={[Styles.newDeckContainer, { paddingTop: 10 }]}>
+      <View style={styles.deckTitleContainer}>
         <TextInput
           ref={titleBox}
-          style={[Styles.newDeckInput, { color: text, fontSize: 40 }]}
+          style={[styles.deckTitleInput, { color: text }]}
           value={displayTitle}
           selectTextOnFocus
           onChangeText={(value) => setDisplayTitle(value)}
           onEndEditing={updateTitle}
         />
+        <Text>
+          {Object.values(selectedCards).filter(Boolean).length} / {cards.length}
+        </Text>
       </View>
       <CardList id={id} selectedCards={selectedCards} toggleCheckbox={toggleCheckbox} />
-      <SafeAreaView style={styles.actionBtnRow}>
+      <SafeAreaView style={Styles.actionBtnRow}>
         <Button
-          {...actionBtnProps}
+          {...bottomActionBtnProps}
           mode="outlined"
           icon="plus-circle"
           children="Add a Card"
           onPress={() => console.log('add a card')}
         />
         <Button
-          {...actionBtnProps}
+          {...bottomActionBtnProps}
           mode="contained"
           icon="cards"
           children="Start Quiz"
@@ -131,13 +143,20 @@ export default function Deck() {
   );
 }
 
+const iconColor = white;
 const { OS } = Platform;
 
 const styles = StyleSheet.create({
-  actionBtnRow: {
-    flexDirection: 'row',
+  deckTitleContainer: {
+    ...Styles.deckTitleContainer,
+    alignItems: 'flex-end',
+    paddingTop: 10,
   },
-  actionBtn: {
+  deckTitleInput: {
+    ...Styles.deckTitleInput,
+    fontSize: 40,
+  },
+  bottomActionBtn: {
     flex: 1,
     margin: 10,
     ...Platform.select({
@@ -146,13 +165,13 @@ const styles = StyleSheet.create({
       },
     }),
   },
-  actionBtnLabel: {
+  bottomActionBtnLabel: {
     fontSize: 18,
   },
 });
 
-const actionBtnProps = {
-  style: styles.actionBtn,
-  labelStyle: styles.actionBtnLabel,
+const bottomActionBtnProps = {
+  style: styles.bottomActionBtn,
+  labelStyle: styles.bottomActionBtnLabel,
   uppercase: OS === 'android',
 };

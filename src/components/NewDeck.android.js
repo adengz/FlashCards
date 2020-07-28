@@ -23,7 +23,7 @@ export default function NewDeckAndroid() {
   return (
     <View style={styles.container}>
       <TextInput
-        style={Styles.newDeckInput}
+        style={Styles.deckTitleInput}
         label="Add a new deck"
         placeholder="Title"
         onChangeText={(value) => setTitle(value)}
@@ -45,7 +45,7 @@ const iconSize = 60;
 
 const styles = StyleSheet.create({
   container: {
-    ...Styles.newDeckContainer,
+    ...Styles.deckTitleContainer,
     alignItems: 'baseline',
   },
   btn: {
