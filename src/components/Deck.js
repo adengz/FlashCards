@@ -5,12 +5,13 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateDeckTitle, deleteDeck } from '../redux/actions/data';
 import CardList from './CardList';
+import { createTwoButtonnAlert } from '../utils/alerts';
 import Styles from '../styles/stylesheet';
 import { white } from '../styles/palette';
 
 export default function Deck() {
   const { id } = useRoute().params;
-  const { title } = useSelector(({ data }) => data.decks[id]);
+  const { title } = useSelector(({ data }) => data.decks[id]) || '';
   const [displayTitle, setDisplayTitle] = useState(title);
   const titleBox = useRef(null);
   const [moreMenuVisible, setMoreMenuVisible] = useState(false);
@@ -22,7 +23,7 @@ export default function Deck() {
     setMoreMenuVisible(!moreMenuVisible);
   };
 
-  const handleTitleUpdate = () => {
+  const updateTitle = () => {
     const newTitle = displayTitle.trim();
     if (newTitle === '') {
       setDisplayTitle(title);
@@ -30,6 +31,19 @@ export default function Deck() {
       // persist storage
       dispatch(updateDeckTitle({ deckId: id, title: newTitle }));
     }
+  };
+
+  const remove = () => {
+    createTwoButtonnAlert({
+      title: `Delete ${title}`,
+      msg: `Are you sure you want to delete ${title}? You will lose all its cards permanently.`,
+      confirmText: 'Confirm',
+      confirmOnPress: () => {
+        navigation.navigate('Home');
+        // persist storage
+        dispatch(deleteDeck({ deckId: id }));
+      },
+    });
   };
 
   useEffect(() => {
@@ -60,7 +74,7 @@ export default function Deck() {
             icon="delete-outline"
             onPress={() => {
               toggleMoreMenu();
-              console.log('delete deck');
+              remove();
             }}
           />
         </Menu>
@@ -77,7 +91,7 @@ export default function Deck() {
           value={displayTitle}
           selectTextOnFocus
           onChangeText={(value) => setDisplayTitle(value)}
-          onEndEditing={handleTitleUpdate}
+          onEndEditing={updateTitle}
         />
       </View>
       <CardList id={id} />

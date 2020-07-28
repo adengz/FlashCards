@@ -6,8 +6,13 @@ import Styles from '../styles/stylesheet';
 
 export default function CardList({ id }) {
   const { cards, decks } = useSelector(({ data }) => data);
-  const cardsInDeck = decks[id].cards.map((cardId) => cards[cardId]);
   const { primary } = useTheme().colors;
+
+  if (typeof decks[id] === 'undefined') {
+    return null;
+  }
+
+  const cardsInDeck = decks[id].cards.map((cardId) => cards[cardId]);
 
   return (
     <View style={Styles.mainContainer}>
