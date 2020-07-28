@@ -1,4 +1,10 @@
-import { ADD_DECK, UPDATE_DECK_TITLE, DELETE_DECK, CLEAR_DATA } from '../actions/data';
+import {
+  ADD_DECK,
+  UPDATE_DECK_TITLE,
+  DELETE_DECK,
+  DELETE_CARDS,
+  CLEAR_DATA,
+} from '../actions/data';
 import { colorMap } from '../../styles/palette';
 
 const now = Date.now();
@@ -54,12 +60,30 @@ export default function data(state = defaultState, action) {
     case DELETE_DECK: {
       const { id } = action;
       const { [id]: deletedDeck, ...remainingDecks } = state.decks;
-      const cardIds = new Set(deletedDeck.cards);
+      const deletedCardIds = new Set(deletedDeck.cards);
       return {
         ...state,
         decks: remainingDecks,
-        // not sure if there is a better way to remove mutiple computed properties
-        cards: Object.fromEntries(Object.entries(state.cards).filter(([k]) => !cardIds.has(k))),
+        cards: Object.fromEntries(
+          Object.entries(state.cards).filter(([k]) => !deletedCardIds.has(k))
+        ),
+      };
+    }
+    case DELETE_CARDS: {
+      const { id, cardIds } = action;
+      const deletedCardIds = new Set(cardIds);
+      return {
+        ...state,
+        decks: {
+          ...state.decks,
+          [id]: {
+            ...state.decks[id],
+            cards: state.decks[id].cards.filter((k) => !deletedCardIds.has(k)),
+          },
+        },
+        cards: Object.fromEntries(
+          Object.entries(state.cards).filter(([k]) => !deletedCardIds.has(k))
+        ),
       };
     }
     case CLEAR_DATA:
