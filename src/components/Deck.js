@@ -3,7 +3,7 @@ import { View, TextInput, SafeAreaView, StyleSheet, Platform } from 'react-nativ
 import { useTheme, Menu, IconButton, Text, Divider, Button } from 'react-native-paper';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateDeckTitle, deleteDeck } from '../redux/actions/data';
+import { updateDeckTitle, deleteDeck, deleteCards } from '../redux/actions/data';
 import CardList from './CardList';
 import { createTwoButtonnAlert } from '../utils/alerts';
 import Styles from '../styles/stylesheet';
@@ -45,7 +45,7 @@ export default function Deck() {
     }
   };
 
-  const remove = () => {
+  const removeDeck = () => {
     createTwoButtonnAlert({
       title: `Delete ${currTitle}`,
       msg: `Are you sure you want to delete ${currTitle}? You will lose all its cards permanently.`,
@@ -62,16 +62,32 @@ export default function Deck() {
     setSelectedCards({ ...selectedCards, [cardId]: !selectedCards[cardId] });
   };
 
+  const removeCards = () => {
+    const entries = Object.entries(selectedCards);
+    const cardIds = entries.filter(([, v]) => v).map(([k]) => k);
+    const removeConfirmed = () => {
+      setSelectedCards(Object.fromEntries(entries.filter(([, v]) => !v)));
+      // persist storage
+      dispatch(deleteCards({ id, cardIds }));
+    };
+    if (cardIds.length > 1) {
+      createTwoButtonnAlert({
+        title: 'Delete Cards',
+        msg: `Are you sure you want to delete these ${cardIds.length} cards? You will lose them permanently.`,
+        confirmText: 'Confirm',
+        confirmOnPress: removeConfirmed,
+      });
+    } else {
+      removeConfirmed();
+    }
+  };
+
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
         <View style={Styles.actionBtnRow}>
           {Object.values(selectedCards).filter(Boolean).length > 0 && (
-            <IconButton
-              color={iconColor}
-              icon="delete"
-              onPress={() => console.log('batch delete cards')}
-            />
+            <IconButton color={iconColor} icon="delete" onPress={removeCards} />
           )}
           <Menu
             visible={moreMenuVisible}
@@ -98,7 +114,7 @@ export default function Deck() {
               icon="delete"
               onPress={() => {
                 toggleMoreMenu();
-                remove();
+                removeDeck();
               }}
             />
           </Menu>
