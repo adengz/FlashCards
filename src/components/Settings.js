@@ -4,7 +4,6 @@ import { useTheme, List, Switch, Divider } from 'react-native-paper';
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleDark } from '../redux/actions/settings';
 import Styles from '../styles/stylesheet';
-import { red } from '../styles/palette';
 
 export default function Settings() {
   const { dark } = useSelector(({ settings }) => settings);
@@ -47,7 +46,7 @@ export default function Settings() {
 
 const styles = StyleSheet.create({
   titleDanger: {
-    color: red,
+    color: 'red',
     fontWeight: 'bold',
   },
 });

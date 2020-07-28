@@ -1,11 +1,57 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, SafeAreaView, StyleSheet, Platform } from 'react-native';
-import { Button } from 'react-native-paper';
+import { Menu, IconButton, Divider, Button } from 'react-native-paper';
+import { useRoute, useNavigation } from '@react-navigation/native';
 import DeckTitle from './DeckTitle';
 import CardList from './CardList';
 import Styles from '../styles/stylesheet';
+import { white } from '../styles/palette';
 
 export default function Deck() {
+  const { id } = useRoute().params;
+  const [moreMenuVisible, setMoreMenuVisible] = useState(false);
+  const navigation = useNavigation();
+
+  const toggleMoreMenu = () => {
+    setMoreMenuVisible(!moreMenuVisible);
+  };
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <Menu
+          visible={moreMenuVisible}
+          onDismiss={toggleMoreMenu}
+          anchor={
+            <IconButton
+              color={white}
+              icon={`dots-${OS === 'ios' ? 'horizontal' : 'vertical'}`}
+              onPress={toggleMoreMenu}
+            />
+          }
+        >
+          <Menu.Item
+            title="Rename deck"
+            icon="square-edit-outline"
+            onPress={() => {
+              toggleMoreMenu();
+              console.log('rename deck');
+            }}
+          />
+          <Divider />
+          <Menu.Item
+            title="DELETE DECK"
+            icon="delete-outline"
+            onPress={() => {
+              toggleMoreMenu();
+              console.log('delete deck');
+            }}
+          />
+        </Menu>
+      ),
+    });
+  });
+
   return (
     <View style={Styles.mainContainer}>
       <DeckTitle />
@@ -30,6 +76,8 @@ export default function Deck() {
   );
 }
 
+const { OS } = Platform;
+
 const styles = StyleSheet.create({
   actionBtnRow: {
     flexDirection: 'row',
@@ -51,5 +99,5 @@ const styles = StyleSheet.create({
 const actionBtnProps = {
   style: styles.actionBtn,
   labelStyle: styles.actionBtnLabel,
-  uppercase: Platform.OS === 'android',
+  uppercase: OS === 'android',
 };

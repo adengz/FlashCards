@@ -39,7 +39,6 @@ export default function Home() {
       headerRight: () => (
         <View style={styles.actionBtnRow}>
           <IconButton
-            style={styles.actionBtn}
             color={iconColor}
             icon={`arrow-${descending ? 'down' : 'up'}-thick`}
             onPress={toggleOrder}
@@ -49,7 +48,6 @@ export default function Home() {
             onDismiss={toggleMoreMenu}
             anchor={
               <IconButton
-                style={styles.actionBtn}
                 color={iconColor}
                 icon={`dots-${OS === 'ios' ? 'horizontal' : 'vertical'}`}
                 onPress={toggleMoreMenu}
@@ -89,8 +87,5 @@ const { OS } = Platform;
 const styles = StyleSheet.create({
   actionBtnRow: {
     flexDirection: 'row',
-  },
-  actionBtn: {
-    margin: 0,
   },
 });
