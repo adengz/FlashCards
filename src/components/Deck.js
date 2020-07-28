@@ -138,7 +138,12 @@ export default function Deck() {
           {Object.values(selectedCards).filter(Boolean).length} / {cards.length}
         </Text>
       </View>
-      <CardList id={id} selectedCards={selectedCards} toggleCheckbox={toggleCheckbox} />
+      <CardList
+        id={id}
+        navigation={navigation}
+        selectedCards={selectedCards}
+        toggleCheckbox={toggleCheckbox}
+      />
       <SafeAreaView style={Styles.actionBtnRow}>
         <Button
           {...bottomActionBtnProps}

@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Home from '../components/Home';
 import Settings from '../components/Settings';
 import Deck from '../components/Deck';
+import Card from '../components/Card';
 import { white } from '../styles/palette';
 
 const Stack = createStackNavigator();
@@ -23,6 +24,11 @@ const screens = {
   Deck: {
     name: 'Deck',
     component: Deck,
+    options: { headerTitle: null },
+  },
+  Card: {
+    name: 'Card',
+    component: Card,
     options: { headerTitle: null },
   },
 };

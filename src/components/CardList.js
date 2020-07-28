@@ -4,7 +4,7 @@ import { useTheme, List, Checkbox, Divider } from 'react-native-paper';
 import { useSelector } from 'react-redux';
 import Styles from '../styles/stylesheet';
 
-export default function CardList({ id, selectedCards, toggleCheckbox }) {
+export default function CardList({ id, navigation, selectedCards, toggleCheckbox }) {
   const { cards, decks } = useSelector(({ data }) => data);
   const { primary } = useTheme().colors;
 
@@ -19,18 +19,18 @@ export default function CardList({ id, selectedCards, toggleCheckbox }) {
       <FlatList
         data={cardsInDeck}
         renderItem={({ item }) => {
-          const { id, question } = item;
+          const { id: cardId, question } = item;
           return (
             <List.Item
               title={question}
               left={() => (
                 <Checkbox
                   color={primary}
-                  status={selectedCards[id] ? 'checked' : 'unchecked'}
-                  onPress={() => toggleCheckbox(id)}
+                  status={selectedCards[cardId] ? 'checked' : 'unchecked'}
+                  onPress={() => toggleCheckbox(cardId)}
                 />
               )}
-              onPress={() => console.log('go to card')}
+              onPress={() => navigation.navigate('Card', { id, cardId })}
             />
           );
         }}
