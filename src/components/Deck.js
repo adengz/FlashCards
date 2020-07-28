@@ -55,7 +55,7 @@ export default function Deck() {
   return (
     <View style={Styles.mainContainer}>
       <DeckTitle />
-      <CardList />
+      <CardList id={id} />
       <SafeAreaView style={styles.actionBtnRow}>
         <Button
           {...actionBtnProps}
