@@ -8,7 +8,7 @@ import Styles from '../styles/stylesheet';
 import { gray } from '../styles/palette';
 
 export default function NewDeckIOS() {
-  const [title, setTitle] = useState('');
+  const [typedTitle, setTypedTitle] = useState('');
   const dispatch = useDispatch();
   const {
     roundness,
@@ -16,12 +16,12 @@ export default function NewDeckIOS() {
   } = useTheme();
 
   const submit = () => {
-    const newTitle = title.trim();
-    if (newTitle !== '') {
+    const title = typedTitle.trim();
+    if (title !== '') {
       // persist storage
-      dispatch(addDeck({ newTitle, ...getNewDeckMetaData() }));
+      dispatch(addDeck({ title, ...getNewDeckMetaData() }));
     }
-    setTitle('');
+    setTypedTitle('');
   };
 
   return (
@@ -31,8 +31,8 @@ export default function NewDeckIOS() {
         placeholderTextColor={gray}
         clearButtonMode="while-editing"
         placeholder="Title of new deck"
-        onChangeText={(value) => setTitle(value)}
-        value={title}
+        onChangeText={(value) => setTypedTitle(value)}
+        value={typedTitle}
       />
       <Button
         style={styles.btn}
@@ -42,7 +42,7 @@ export default function NewDeckIOS() {
         icon="plus"
         children="Add"
         onPress={submit}
-        disabled={title === ''}
+        disabled={typedTitle === ''}
       />
     </View>
   );

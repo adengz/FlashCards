@@ -12,16 +12,16 @@ import { white } from '../styles/palette';
 export default function Deck() {
   const { id } = useRoute().params;
   const deck = useSelector(({ data }) => data.decks[id]);
-  let title;
+  let currTitle;
   let cards;
   if (typeof deck === 'undefined') {
-    title = '';
+    currTitle = '';
     cards = [];
   } else {
-    ({ title, cards } = deck);
+    ({ title: currTitle, cards } = deck);
   }
 
-  const [displayTitle, setDisplayTitle] = useState(title);
+  const [displayedTitle, setDisplayedTitle] = useState(currTitle);
   const titleBox = useRef(null);
   const [moreMenuVisible, setMoreMenuVisible] = useState(false);
   const [selectedCards, setSelectedCards] = useState(
@@ -36,19 +36,19 @@ export default function Deck() {
   };
 
   const updateTitle = () => {
-    const newTitle = displayTitle.trim();
-    if (newTitle === '') {
-      setDisplayTitle(title);
-    } else if (newTitle !== title) {
+    const title = displayedTitle.trim();
+    if (title === '') {
+      setDisplayedTitle(currTitle);
+    } else if (title !== currTitle) {
       // persist storage
-      dispatch(updateDeckTitle({ id, newTitle }));
+      dispatch(updateDeckTitle({ id, title }));
     }
   };
 
   const remove = () => {
     createTwoButtonnAlert({
-      title: `Delete ${title}`,
-      msg: `Are you sure you want to delete ${title}? You will lose all its cards permanently.`,
+      title: `Delete ${currTitle}`,
+      msg: `Are you sure you want to delete ${currTitle}? You will lose all its cards permanently.`,
       confirmText: 'Confirm',
       confirmOnPress: () => {
         navigation.navigate('Home');
@@ -113,9 +113,9 @@ export default function Deck() {
         <TextInput
           ref={titleBox}
           style={[styles.deckTitleInput, { color: text }]}
-          value={displayTitle}
+          value={displayedTitle}
           selectTextOnFocus
-          onChangeText={(value) => setDisplayTitle(value)}
+          onChangeText={(value) => setDisplayedTitle(value)}
           onEndEditing={updateTitle}
         />
         <Text>

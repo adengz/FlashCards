@@ -7,17 +7,17 @@ import { getNewDeckMetaData } from '../utils/helpers';
 import Styles from '../styles/stylesheet';
 
 export default function NewDeckAndroid() {
-  const [title, setTitle] = useState('');
+  const [typedTitle, setTypedTitle] = useState('');
   const { primary } = useTheme().colors;
   const dispatch = useDispatch();
 
   const submit = () => {
-    const newTitle = title.trim();
-    if (newTitle !== '') {
+    const title = typedTitle.trim();
+    if (title !== '') {
       // persist storage
-      dispatch(addDeck({ newTitle, ...getNewDeckMetaData() }));
+      dispatch(addDeck({ title, ...getNewDeckMetaData() }));
     }
-    setTitle('');
+    setTypedTitle('');
   };
 
   return (
@@ -26,8 +26,8 @@ export default function NewDeckAndroid() {
         style={Styles.deckTitleInput}
         label="Add a new deck"
         placeholder="Title"
-        onChangeText={(value) => setTitle(value)}
-        value={title}
+        onChangeText={(value) => setTypedTitle(value)}
+        value={typedTitle}
       />
       <IconButton
         style={styles.btn}
@@ -35,7 +35,7 @@ export default function NewDeckAndroid() {
         size={iconSize}
         icon="plus-box"
         onPress={submit}
-        disabled={title === ''}
+        disabled={typedTitle === ''}
       />
     </View>
   );

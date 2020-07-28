@@ -3,17 +3,17 @@ export const UPDATE_DECK_TITLE = 'UPDATE_DECK_TITLE';
 export const DELETE_DECK = 'DELETE_DECK';
 export const CLEAR_DATA = 'CLEAR_DATA';
 
-export const addDeck = ({ id, newTitle, timestamp }) => ({
+export const addDeck = ({ id, title, timestamp }) => ({
   type: ADD_DECK,
   id,
-  newTitle,
+  title,
   timestamp,
 });
 
-export const updateDeckTitle = ({ id, newTitle }) => ({
+export const updateDeckTitle = ({ id, title }) => ({
   type: UPDATE_DECK_TITLE,
   id,
-  newTitle,
+  title,
 });
 
 export const deleteDeck = (id) => ({

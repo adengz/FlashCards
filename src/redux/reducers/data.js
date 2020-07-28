@@ -23,46 +23,45 @@ for (let i = 0; i < colorMap.length; i++) {
 
 export default function data(state = defaultState, action) {
   switch (action.type) {
-    case ADD_DECK:
+    case ADD_DECK: {
+      const { id, title, timestamp } = action;
       return {
         ...state,
         decks: {
           ...state.decks,
-          [action.deckId]: {
-            id: action.deckId,
-            title: action.title,
-            timestamp: action.timestamp,
+          [id]: {
+            id,
+            title,
+            timestamp,
             cards: [],
           },
         },
       };
-    case UPDATE_DECK_TITLE:
+    }
+    case UPDATE_DECK_TITLE: {
+      const { id, title } = action;
       return {
         ...state,
         decks: {
           ...state.decks,
-          [action.deckId]: {
-            ...state.decks[action.deckId],
-            title: action.title,
+          [id]: {
+            ...state.decks[id],
+            title,
           },
         },
       };
-    case DELETE_DECK:
+    }
+    case DELETE_DECK: {
+      const { id } = action;
+      const { [id]: deletedDeck, ...remainingDecks } = state.decks;
+      const cardIds = new Set(deletedDeck.cards);
       return {
         ...state,
-        decks: Object.assign(
-          {},
-          ...Object.entries(state.decks)
-            .filter(([k]) => k !== action.deckId)
-            .map(([k, v]) => ({ [k]: v }))
-        ),
-        cards: Object.assign(
-          {},
-          ...Object.entries(state.cards)
-            .filter(([k]) => !state.decks[action.deckId].cards.includes(k))
-            .map(([k, v]) => ({ [k]: v }))
-        ),
+        decks: remainingDecks,
+        // not sure if there is a better way to remove mutiple computed properties
+        cards: Object.fromEntries(Object.entries(state.cards).filter(([k]) => !cardIds.has(k))),
       };
+    }
     case CLEAR_DATA:
       return { decks: {}, cards: {} };
     default:
