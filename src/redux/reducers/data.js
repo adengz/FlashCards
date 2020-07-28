@@ -4,7 +4,7 @@ import { colorMap } from '../../styles/palette';
 const now = Date.now();
 const defaultState = {
   decks: {
-    colors: {
+    deck_colors: {
       id: 'deck_colors',
       title: 'colors',
       timestamp: now,
