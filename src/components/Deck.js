@@ -29,7 +29,7 @@ export default function Deck() {
       setDisplayTitle(title);
     } else if (newTitle !== title) {
       // persist storage
-      dispatch(updateDeckTitle({ deckId: id, title: newTitle }));
+      dispatch(updateDeckTitle({ id, newTitle }));
     }
   };
 
@@ -41,7 +41,7 @@ export default function Deck() {
       confirmOnPress: () => {
         navigation.navigate('Home');
         // persist storage
-        dispatch(deleteDeck({ deckId: id }));
+        dispatch(deleteDeck(id));
       },
     });
   };

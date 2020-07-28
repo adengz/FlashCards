@@ -19,7 +19,7 @@ export default function NewDeckIOS() {
     const newTitle = title.trim();
     if (newTitle !== '') {
       // persist storage
-      dispatch(addDeck({ title: newTitle, ...getNewDeckMetaData() }));
+      dispatch(addDeck({ newTitle, ...getNewDeckMetaData() }));
     }
     setTitle('');
   };

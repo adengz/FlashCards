@@ -1,26 +1,24 @@
-import { UPDATE_DECK_SORTING } from "./settings";
-
 export const ADD_DECK = 'ADD_DECK';
 export const UPDATE_DECK_TITLE = 'UPDATE_DECK_TITLE';
 export const DELETE_DECK = 'DELETE_DECK';
 export const CLEAR_DATA = 'CLEAR_DATA';
 
-export const addDeck = ({ deckId, title, timestamp }) => ({
+export const addDeck = ({ id, newTitle, timestamp }) => ({
   type: ADD_DECK,
-  deckId,
-  title,
+  id,
+  newTitle,
   timestamp,
 });
 
-export const updateDeckTitle = ({ deckId, title }) => ({
+export const updateDeckTitle = ({ id, newTitle }) => ({
   type: UPDATE_DECK_TITLE,
-  deckId,
-  title,
+  id,
+  newTitle,
 });
 
-export const deleteDeck = ({ deckId }) => ({
+export const deleteDeck = (id) => ({
   type: DELETE_DECK,
-  deckId,
+  id,
 });
 
 export const clearData = () => ({
