@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Home from '../components/Home';
 import Settings from '../components/Settings';
+import Deck from '../components/Deck';
 import { white } from '../styles/palette';
 
 const Stack = createStackNavigator();
@@ -18,6 +19,10 @@ const screens = {
     name: 'Settings',
     component: Settings,
     options: { title: 'Settings' },
+  },
+  Deck: {
+    name: 'Deck',
+    component: Deck,
   },
 };
 

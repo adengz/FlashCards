@@ -73,7 +73,7 @@ export default function Home() {
   return (
     <View style={Styles.mainContainer}>
       {OS === 'ios' && <NewDeck />}
-      <DeckList />
+      <DeckList navigation={navigation} />
       {OS === 'android' && <NewDeck />}
       <DeckSortingOptions
         visible={sortingOptionsVisible}

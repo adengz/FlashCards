@@ -10,6 +10,7 @@ class DeckList extends Component {
   render() {
     const {
       deckList,
+      navigation,
       theme: { dark, colors, roundness },
     } = this.props;
     styles.title = { fontWeight: dark ? 'bold' : 'normal' };
@@ -19,10 +20,16 @@ class DeckList extends Component {
         <FlatList
           data={deckList}
           renderItem={({ item, index }) => {
+            const { id, title, cards } = item;
             const color = colorMap[index % colorMap.length];
             return (
               <CardFlip style={styles.cardContainer} ref={(card) => (this[`card${index}`] = card)}>
-                <TouchableWithoutFeedback onPress={() => this[`card${index}`].jiggle()}>
+                <TouchableWithoutFeedback
+                  onPress={() => {
+                    this[`card${index}`].jiggle();
+                    setTimeout(() => navigation.navigate('Deck', { id }), 500);
+                  }}
+                >
                   <View
                     style={[
                       styles.card,
@@ -30,11 +37,9 @@ class DeckList extends Component {
                     ]}
                   >
                     <Headline style={[styles.title, { color: dark ? color : colors.text }]}>
-                      {item.title}
+                      {title}
                     </Headline>
-                    <Subheading style={styles.stats}>
-                      {getFormattedStats(item.cards.length)}
-                    </Subheading>
+                    <Subheading style={styles.stats}>{getFormattedStats(cards.length)}</Subheading>
                   </View>
                 </TouchableWithoutFeedback>
                 <View style={styles.card} />
