@@ -12,12 +12,11 @@ export default function NewDeckAndroid() {
   const dispatch = useDispatch();
 
   const submit = () => {
-    const newDeckData = {
-      title,
-      ...getNewDeckMetaData(),
-    };
-    // persist storage
-    dispatch(addDeck(newDeckData));
+    const newTitle = title.trim();
+    if (newTitle !== '') {
+      // persist storage
+      dispatch(addDeck({ title: newTitle, ...getNewDeckMetaData() }));
+    }
     setTitle('');
   };
 

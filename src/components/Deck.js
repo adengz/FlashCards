@@ -3,6 +3,7 @@ import { View, TextInput, SafeAreaView, StyleSheet, Platform } from 'react-nativ
 import { useTheme, Menu, IconButton, Divider, Button } from 'react-native-paper';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
+import { updateDeckTitle, deleteDeck } from '../redux/actions/data';
 import CardList from './CardList';
 import Styles from '../styles/stylesheet';
 import { white } from '../styles/palette';
@@ -19,6 +20,16 @@ export default function Deck() {
 
   const toggleMoreMenu = () => {
     setMoreMenuVisible(!moreMenuVisible);
+  };
+
+  const handleTitleUpdate = () => {
+    const newTitle = displayTitle.trim();
+    if (newTitle === '') {
+      setDisplayTitle(title);
+    } else if (newTitle !== title) {
+      // persist storage
+      dispatch(updateDeckTitle({ deckId: id, title: newTitle }));
+    }
   };
 
   useEffect(() => {
@@ -66,7 +77,7 @@ export default function Deck() {
           value={displayTitle}
           selectTextOnFocus
           onChangeText={(value) => setDisplayTitle(value)}
-          onEndEditing={() => console.log('Setting new title: ' + displayTitle)}
+          onEndEditing={handleTitleUpdate}
         />
       </View>
       <CardList id={id} />
