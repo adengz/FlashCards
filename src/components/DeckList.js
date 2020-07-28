@@ -52,7 +52,7 @@ class DeckList extends Component {
   }
 }
 
-const getFormattedStats = (count) => `${count} card${count !== 1 && 's'}`;
+const getFormattedStats = (count) => `${count} card${count === 1 ? '' : 's'}`;
 
 const mapStateToProps = ({ settings, data }) => {
   const deckList = Object.values(data.decks);
