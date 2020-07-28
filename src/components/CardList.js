@@ -27,6 +27,8 @@ export default function CardList({ id }) {
           />
         )}
         ItemSeparatorComponent={() => <Divider />}
+        ListHeaderComponent={() => <Divider />}
+        ListFooterComponent={() => <Divider />}
       />
     </View>
   );

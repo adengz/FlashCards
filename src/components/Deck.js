@@ -1,16 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { View, SafeAreaView, StyleSheet, Platform } from 'react-native';
-import { Menu, IconButton, Divider, Button } from 'react-native-paper';
+import React, { useState, useRef, useEffect } from 'react';
+import { View, TextInput, SafeAreaView, StyleSheet, Platform } from 'react-native';
+import { useTheme, Menu, IconButton, Divider, Button } from 'react-native-paper';
 import { useRoute, useNavigation } from '@react-navigation/native';
-import DeckTitle from './DeckTitle';
+import { useSelector, useDispatch } from 'react-redux';
 import CardList from './CardList';
 import Styles from '../styles/stylesheet';
 import { white } from '../styles/palette';
 
 export default function Deck() {
   const { id } = useRoute().params;
+  const { title } = useSelector(({ data }) => data.decks[id]);
+  const [displayTitle, setDisplayTitle] = useState(title);
+  const titleBox = useRef(null);
   const [moreMenuVisible, setMoreMenuVisible] = useState(false);
+  const { text } = useTheme().colors;
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const toggleMoreMenu = () => {
     setMoreMenuVisible(!moreMenuVisible);
@@ -35,7 +40,7 @@ export default function Deck() {
             icon="square-edit-outline"
             onPress={() => {
               toggleMoreMenu();
-              console.log('rename deck');
+              titleBox.current.focus();
             }}
           />
           <Divider />
@@ -54,7 +59,16 @@ export default function Deck() {
 
   return (
     <View style={Styles.mainContainer}>
-      <DeckTitle />
+      <View style={[Styles.newDeckContainer, { paddingTop: 10 }]}>
+        <TextInput
+          ref={titleBox}
+          style={[Styles.newDeckInput, { color: text, fontSize: 40 }]}
+          value={displayTitle}
+          selectTextOnFocus
+          onChangeText={(value) => setDisplayTitle(value)}
+          onEndEditing={() => console.log('Setting new title: ' + displayTitle)}
+        />
+      </View>
       <CardList id={id} />
       <SafeAreaView style={styles.actionBtnRow}>
         <Button

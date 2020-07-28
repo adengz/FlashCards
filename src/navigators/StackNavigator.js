@@ -23,6 +23,7 @@ const screens = {
   Deck: {
     name: 'Deck',
     component: Deck,
+    options: { headerTitle: null },
   },
 };
 
