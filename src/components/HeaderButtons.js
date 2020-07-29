@@ -9,7 +9,7 @@ export const EditBtn = ({ onPress }) =>
     android: <PaperButton color={defaultColor} children="Edit" onPress={onPress} />,
   });
 
-export const SaveBtn = ({ onPress, disabled }) =>
+export const SaveBtn = ({ onPress, disabled = false }) =>
   Platform.select({
     ios: (
       <TouchableOpacity onPress={onPress} disabled={disabled}>
