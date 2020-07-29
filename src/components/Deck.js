@@ -145,7 +145,7 @@ export default function Deck() {
           mode="outlined"
           icon="plus-circle"
           children="Add a Card"
-          onPress={() => console.log('add a card')}
+          onPress={() => navigation.navigate('Card', { id })}
         />
         <Button
           {...bottomActionBtnProps}

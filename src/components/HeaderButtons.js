@@ -9,14 +9,16 @@ export const EditBtn = ({ onPress }) =>
     android: <PaperButton color={defaultColor} children="Edit" onPress={onPress} />,
   });
 
-export const SaveBtn = ({ onPress }) =>
+export const SaveBtn = ({ onPress, disabled }) =>
   Platform.select({
     ios: (
-      <TouchableOpacity onPress={onPress}>
-        <Text style={styles.iosDone}>Done</Text>
+      <TouchableOpacity onPress={onPress} disabled={disabled}>
+        <Text style={[styles.iosDone, { fontWeight: disabled ? 'normal' : 'bold' }]}>Done</Text>
       </TouchableOpacity>
     ),
-    android: <PaperButton color={defaultColor} children="Save" onPress={onPress} />,
+    android: (
+      <PaperButton color={defaultColor} children="Save" onPress={onPress} disabled={disabled} />
+    ),
   });
 
 export const CancelBtn = ({ onPress }) =>
@@ -38,7 +40,6 @@ const defaultColor = white;
 const styles = StyleSheet.create({
   iosDone: {
     color: defaultColor,
-    fontWeight: 'bold',
     margin: 8,
     fontSize: 18,
   },
