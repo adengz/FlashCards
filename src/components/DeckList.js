@@ -3,8 +3,9 @@ import { View, FlatList, TouchableWithoutFeedback, Dimensions, StyleSheet } from
 import { Headline, Subheading, withTheme } from 'react-native-paper';
 import { connect } from 'react-redux';
 import CardFlip from 'react-native-card-flip';
+import { getFormattedStats } from '../utils/helpers/';
 import Styles from '../styles/stylesheet';
-import { colorMap, darkGray } from '../styles/palette';
+import { colorMap } from '../styles/palette';
 
 class DeckList extends Component {
   render() {
@@ -39,7 +40,7 @@ class DeckList extends Component {
                     <Headline style={[styles.title, { color: dark ? color : colors.text }]}>
                       {title}
                     </Headline>
-                    <Subheading style={styles.stats}>{getFormattedStats(cards.length)}</Subheading>
+                    <Subheading>{getFormattedStats(cards.length)}</Subheading>
                   </View>
                 </TouchableWithoutFeedback>
                 <View style={styles.card} />
@@ -51,8 +52,6 @@ class DeckList extends Component {
     );
   }
 }
-
-const getFormattedStats = (count) => `${count} card${count === 1 ? '' : 's'}`;
 
 const mapStateToProps = ({ settings, data }) => {
   const deckList = Object.values(data.decks);
@@ -91,8 +90,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 4, // android only
-  },
-  stats: {
-    color: darkGray,
   },
 });

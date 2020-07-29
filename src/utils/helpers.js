@@ -8,3 +8,5 @@ export const getNewDeckMetaData = () => ({
 export const getNewCardMetaData = () => ({
   newCardId: `card_${generateUID(11)}`,
 });
+
+export const getFormattedStats = (count) => `${count} card${count === 1 ? '' : 's'}`;

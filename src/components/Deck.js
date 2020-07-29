@@ -8,6 +8,7 @@ import { updateDeckTitle, deleteDeck, deleteCards } from '../redux/actions/data'
 import { CancelBtn, SaveBtn, MoreBtn } from './HeaderButtons';
 import CardList from './CardList';
 import { createTwoButtonnAlert } from '../utils/alerts';
+import { getFormattedStats } from '../utils/helpers';
 import Styles from '../styles/stylesheet';
 import { white } from '../styles/palette';
 
@@ -25,7 +26,7 @@ export default function Deck() {
   const [checkedCards, setCheckedCards] = useState(
     Object.fromEntries(cards.map((cardId) => [cardId, false]))
   );
-  const { text } = useTheme().colors;
+  const { primary } = useTheme().colors;
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
@@ -158,8 +159,7 @@ export default function Deck() {
       <View style={styles.deckTitleContainer}>
         <TextInput
           ref={titleBox}
-          style={[styles.deckTitleInput, { color: text }]}
-          onFocus={startEditTitle}
+          style={[styles.deckTitleInput, { color: primary }]}
           editable={titleEditable}
           value={displayedTitle}
           selectTextOnFocus
@@ -167,7 +167,8 @@ export default function Deck() {
           onSubmitEditing={saveNewTitle}
         />
         <Text>
-          {Object.values(checkedCards).filter(Boolean).length} / {cards.length}
+          {cardsCheckable && `${Object.values(checkedCards).filter(Boolean).length} /`}
+          {getFormattedStats(cards.length)}
         </Text>
       </View>
       <CardList
