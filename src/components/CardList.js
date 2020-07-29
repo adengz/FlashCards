@@ -23,15 +23,14 @@ export default function CardList({ id, navigation, cardsCheckable, checkedCards,
           return (
             <List.Item
               title={question}
-              left={() =>
-                cardsCheckable ? (
-                  <Checkbox
-                    color={primary}
-                    status={checkedCards[cardId] ? 'checked' : 'unchecked'}
-                    onPress={() => toggleCheckbox(cardId)}
-                  />
-                ) : null
-              }
+              left={() => (
+                <Checkbox
+                  color={primary}
+                  disabled={!cardsCheckable}
+                  status={checkedCards[cardId] ? 'checked' : 'unchecked'}
+                  onPress={() => toggleCheckbox(cardId)}
+                />
+              )}
               onPress={() => navigation.navigate('Card', { id, cardId })}
             />
           );
