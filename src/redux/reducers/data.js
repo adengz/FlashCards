@@ -2,6 +2,8 @@ import {
   ADD_DECK,
   UPDATE_DECK_TITLE,
   DELETE_DECK,
+  ADD_CARD,
+  UPDATE_CARD,
   DELETE_CARDS,
   CLEAR_DATA,
 } from '../actions/data';
@@ -67,6 +69,41 @@ export default function data(state = defaultState, action) {
         cards: Object.fromEntries(
           Object.entries(state.cards).filter(([k]) => !deletedCardIds.has(k))
         ),
+      };
+    }
+    case ADD_CARD: {
+      const { id, cardId, question, answer } = action;
+      return {
+        ...state,
+        decks: {
+          ...state.decks,
+          [id]: {
+            ...state.decks[id],
+            cards: state.decks[id].cards.concat([cardId]),
+          },
+        },
+        cards: {
+          ...state.cards,
+          [cardId]: {
+            id: cardId,
+            question,
+            answer,
+          },
+        },
+      };
+    }
+    case UPDATE_CARD: {
+      const { cardId, question, answer } = action;
+      return {
+        ...state,
+        cards: {
+          ...state.cards,
+          [cardId]: {
+            ...state.cards[cardId],
+            question,
+            answer,
+          },
+        },
       };
     }
     case DELETE_CARDS: {

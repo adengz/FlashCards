@@ -1,6 +1,8 @@
 export const ADD_DECK = 'ADD_DECK';
 export const UPDATE_DECK_TITLE = 'UPDATE_DECK_TITLE';
 export const DELETE_DECK = 'DELETE_DECK';
+export const ADD_CARD = 'ADD_CARD';
+export const UPDATE_CARD = 'UPDATE_CARD';
 export const DELETE_CARDS = 'DELETE_CARDS';
 export const CLEAR_DATA = 'CLEAR_DATA';
 
@@ -20,6 +22,21 @@ export const updateDeckTitle = ({ id, title }) => ({
 export const deleteDeck = (id) => ({
   type: DELETE_DECK,
   id,
+});
+
+export const addCard = ({ id, cardId, question, answer }) => ({
+  type: ADD_CARD,
+  id,
+  cardId,
+  question,
+  answer,
+});
+
+export const updateCard = ({ cardId, question, answer }) => ({
+  type: ADD_CARD,
+  cardId,
+  question,
+  answer,
 });
 
 export const deleteCards = ({ id, cardIds }) => ({
