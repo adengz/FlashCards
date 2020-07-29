@@ -4,7 +4,7 @@ import { useTheme, Card as PaperCard, Title, IconButton } from 'react-native-pap
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { HeaderBackButton } from '@react-navigation/stack';
 import { useSelector, useDispatch } from 'react-redux';
-import { addCard, updateCard } from '../redux/actions/data';
+import { addCard, updateCard, deleteCards } from '../redux/actions/data';
 import { CancelBtn, SaveBtn, EditBtn } from './HeaderButtons';
 import { getNewCardMetaData } from '../utils/helpers';
 import Styles from '../styles/stylesheet';
@@ -13,7 +13,9 @@ export default function Card() {
   const { id, cardId } = useRoute().params;
   const [editable, setEditable] = useState(false);
   const { question: currQuestion = '', answer: currAnswer = '' } = useSelector(({ data }) =>
-    typeof cardId === 'undefined' ? {} : data.cards[cardId]
+    typeof cardId === 'undefined' || typeof data.cards[cardId] === 'undefined'
+      ? {}
+      : data.cards[cardId]
   );
   const questionBox = useRef(null);
   const [displayedQuestion, setDisplayedQuestion] = useState(currQuestion);
@@ -52,6 +54,12 @@ export default function Card() {
       // persist storage
       dispatch(updateCard({ cardId, question, answer }));
     }
+  };
+
+  const removeCard = () => {
+    navigation.goBack();
+    // persist storage
+    dispatch(deleteCards({ id, cardIds: [cardId] }));
   };
 
   useEffect(() => {
@@ -121,7 +129,7 @@ export default function Card() {
             size={30}
             color="red"
             disabled={editable}
-            onPress={() => console.log('delete card')}
+            onPress={removeCard}
           />
         )}
       </PaperCard>
