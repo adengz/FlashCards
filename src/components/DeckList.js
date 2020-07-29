@@ -3,7 +3,7 @@ import { View, FlatList, TouchableWithoutFeedback, Dimensions, StyleSheet } from
 import { Headline, Subheading, withTheme } from 'react-native-paper';
 import { connect } from 'react-redux';
 import CardFlip from 'react-native-card-flip';
-import { getFormattedStats } from '../utils/helpers/';
+import { getFormattedStats } from '../utils/helpers';
 import Styles from '../styles/stylesheet';
 import { colorMap } from '../styles/palette';
 
