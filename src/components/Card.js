@@ -11,15 +11,16 @@ import Styles from '../styles/stylesheet';
 
 export default function Card() {
   const { id, cardId } = useRoute().params;
-  const [editable, setEditable] = useState(false);
   const { question: currQuestion = '', answer: currAnswer = '' } = useSelector(({ data }) =>
     typeof cardId === 'undefined' || typeof data.cards[cardId] === 'undefined'
       ? {}
       : data.cards[cardId]
   );
+
   const questionBox = useRef(null);
   const [displayedQuestion, setDisplayedQuestion] = useState(currQuestion);
   const [displayedAnswer, setDisplayedAnswer] = useState(currAnswer);
+  const [editable, setEditable] = useState(false);
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const {
