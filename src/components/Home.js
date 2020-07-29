@@ -3,10 +3,11 @@ import { View, Platform } from 'react-native';
 import { IconButton, Menu } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
+import { reverseDeckOrder } from '../redux/actions/settings';
+import { MoreBtn } from './HeaderButtons';
 import DeckList from './DeckList';
 import NewDeck from './NewDeck';
 import DeckSortingOptions from './DeckSortingOptions';
-import { reverseDeckOrder } from '../redux/actions/settings';
 import Styles from '../styles/stylesheet';
 import { white } from '../styles/palette';
 
@@ -30,29 +31,19 @@ export default function Home() {
   useEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
-        <IconButton
-          color={iconColor}
-          icon="settings"
-          onPress={() => navigation.navigate('Settings')}
-        />
+        <IconButton color={white} icon="settings" onPress={() => navigation.navigate('Settings')} />
       ),
       headerRight: () => (
         <View style={Styles.actionBtnRow}>
           <IconButton
-            color={iconColor}
+            color={white}
             icon={`arrow-${descending ? 'down' : 'up'}-thick`}
             onPress={toggleOrder}
           />
           <Menu
             visible={moreMenuVisible}
             onDismiss={toggleMoreMenu}
-            anchor={
-              <IconButton
-                color={iconColor}
-                icon={`dots-${OS === 'ios' ? 'horizontal' : 'vertical'}`}
-                onPress={toggleMoreMenu}
-              />
-            }
+            anchor={<MoreBtn onPress={toggleMoreMenu} />}
           >
             <Menu.Item
               title="Sort decks by..."
@@ -81,5 +72,4 @@ export default function Home() {
   );
 }
 
-const iconColor = white;
 const { OS } = Platform;

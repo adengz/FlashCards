@@ -4,6 +4,7 @@ import { useTheme, Menu, IconButton, Text, Divider, Button } from 'react-native-
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateDeckTitle, deleteDeck, deleteCards } from '../redux/actions/data';
+import { MoreBtn } from './HeaderButtons';
 import CardList from './CardList';
 import { createTwoButtonnAlert } from '../utils/alerts';
 import Styles from '../styles/stylesheet';
@@ -87,18 +88,12 @@ export default function Deck() {
       headerRight: () => (
         <View style={Styles.actionBtnRow}>
           {Object.values(selectedCards).filter(Boolean).length > 0 && (
-            <IconButton color={iconColor} icon="delete" onPress={removeCards} />
+            <IconButton color={white} icon="delete" onPress={removeCards} />
           )}
           <Menu
             visible={moreMenuVisible}
             onDismiss={toggleMoreMenu}
-            anchor={
-              <IconButton
-                color={iconColor}
-                icon={`dots-${OS === 'ios' ? 'horizontal' : 'vertical'}`}
-                onPress={toggleMoreMenu}
-              />
-            }
+            anchor={<MoreBtn onPress={toggleMoreMenu} />}
           >
             <Menu.Item
               title="Rename deck"
@@ -164,9 +159,6 @@ export default function Deck() {
   );
 }
 
-const iconColor = white;
-const { OS } = Platform;
-
 const styles = StyleSheet.create({
   deckTitleContainer: {
     ...Styles.deckTitleContainer,
@@ -194,5 +186,5 @@ const styles = StyleSheet.create({
 const bottomActionBtnProps = {
   style: styles.bottomActionBtn,
   labelStyle: styles.bottomActionBtnLabel,
-  uppercase: OS === 'android',
+  uppercase: Platform.OS === 'android',
 };
