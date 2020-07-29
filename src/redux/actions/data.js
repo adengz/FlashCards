@@ -24,16 +24,16 @@ export const deleteDeck = (id) => ({
   id,
 });
 
-export const addCard = ({ id, cardId, question, answer }) => ({
+export const addCard = ({ id, newCardId, question, answer }) => ({
   type: ADD_CARD,
   id,
-  cardId,
+  newCardId,
   question,
   answer,
 });
 
 export const updateCard = ({ cardId, question, answer }) => ({
-  type: ADD_CARD,
+  type: UPDATE_CARD,
   cardId,
   question,
   answer,

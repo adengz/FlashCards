@@ -72,20 +72,20 @@ export default function data(state = defaultState, action) {
       };
     }
     case ADD_CARD: {
-      const { id, cardId, question, answer } = action;
+      const { id, newCardId, question, answer } = action;
       return {
         ...state,
         decks: {
           ...state.decks,
           [id]: {
             ...state.decks[id],
-            cards: state.decks[id].cards.concat([cardId]),
+            cards: state.decks[id].cards.concat([newCardId]),
           },
         },
         cards: {
           ...state.cards,
-          [cardId]: {
-            id: cardId,
+          [newCardId]: {
+            id: newCardId,
             question,
             answer,
           },

@@ -3,20 +3,23 @@ import { View, TextInput, StyleSheet } from 'react-native';
 import { useTheme, Card as PaperCard, Title, IconButton } from 'react-native-paper';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { HeaderBackButton } from '@react-navigation/stack';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { addCard, updateCard } from '../redux/actions/data';
 import { CancelBtn, SaveBtn, EditBtn } from './HeaderButtons';
+import { getNewCardMetaData } from '../utils/helpers';
 import Styles from '../styles/stylesheet';
 
 export default function Card() {
   const { id, cardId } = useRoute().params;
   const [editable, setEditable] = useState(false);
-  const { question = '', answer = '' } = useSelector(({ data }) =>
+  const { question: currQuestion = '', answer: currAnswer = '' } = useSelector(({ data }) =>
     typeof cardId === 'undefined' ? {} : data.cards[cardId]
   );
   const questionBox = useRef(null);
-  const [displayedQuestion, setDisplayedQuestion] = useState(question);
-  const [displayedAnswer, setDisplayedAnswer] = useState(answer);
+  const [displayedQuestion, setDisplayedQuestion] = useState(currQuestion);
+  const [displayedAnswer, setDisplayedAnswer] = useState(currAnswer);
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const {
     roundness,
     colors: { text, background, surface },
@@ -29,8 +32,8 @@ export default function Card() {
 
   const cancelEdit = () => {
     setEditable(false);
-    setDisplayedQuestion(question);
-    setDisplayedAnswer(answer);
+    setDisplayedQuestion(currQuestion);
+    setDisplayedAnswer(currAnswer);
     if (typeof cardId === 'undefined') {
       navigation.goBack();
     }
@@ -38,7 +41,17 @@ export default function Card() {
 
   const saveEdit = () => {
     setEditable(false);
-    console.log('save edit');
+    const question = displayedQuestion.trim();
+    const answer = displayedAnswer.trim();
+    if (typeof cardId === 'undefined') {
+      const metaData = getNewCardMetaData();
+      navigation.setParams({ cardId: metaData.newCardId });
+      // persist storage
+      dispatch(addCard({ id, question, answer, ...metaData }));
+    } else {
+      // persist storage
+      dispatch(updateCard({ cardId, question, answer }));
+    }
   };
 
   useEffect(() => {
@@ -49,16 +62,19 @@ export default function Card() {
         editable ? (
           <SaveBtn
             onPress={saveEdit}
-            disabled={displayedQuestion === '' || displayedAnswer === ''}
+            disabled={displayedQuestion.trim() === '' || displayedAnswer.trim() === ''}
           />
         ) : (
           <EditBtn onPress={startEdit} />
         ),
     });
+  });
+
+  useEffect(() => {
     if (typeof cardId === 'undefined') {
       startEdit();
     }
-  });
+  }, []);
 
   return (
     <View style={Styles.mainContainer}>
