@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { View, TextInput, SafeAreaView, StyleSheet, Platform } from 'react-native';
-import { useTheme, Menu, IconButton, Divider, Button } from 'react-native-paper';
+import { useTheme, Menu, IconButton, Divider, Text, Button } from 'react-native-paper';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { HeaderBackButton } from '@react-navigation/stack';
 import { useSelector, useDispatch } from 'react-redux';
@@ -8,12 +8,13 @@ import { updateDeckTitle, deleteDeck } from '../redux/actions/data';
 import { CancelBtn, SaveBtn, MoreBtn } from './HeaderButtons';
 import CardList from './CardList';
 import { createTwoButtonnAlert } from '../utils/alerts';
+import { getFormattedStats } from '../utils/helpers';
 import Styles from '../styles/stylesheet';
 import { white } from '../styles/palette';
 
 export default function Deck() {
   const { id } = useRoute().params;
-  const { title: currTitle = '' } = useSelector(({ data }) =>
+  const { title: currTitle = '', cards: totalCards = [] } = useSelector(({ data }) =>
     typeof data.decks[id] === 'undefined' ? {} : data.decks[id]
   );
 
@@ -23,6 +24,7 @@ export default function Deck() {
   const [moreMenuVisible, setMoreMenuVisible] = useState(false);
   const [titleEditable, setTitleEditable] = useState(false);
   const [cardsCheckable, setCardsCheckable] = useState(false);
+  const [checkedCardsCount, setCheckedCardsCount] = useState(0);
   const { primary } = useTheme().colors;
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -35,6 +37,7 @@ export default function Deck() {
     setDisplayedTitle(currTitle);
     setTitleEditable(false);
     setCardsCheckable(false);
+    cardList.current.uncheckAllCards();
   };
 
   const saveNewTitle = () => {
@@ -71,7 +74,7 @@ export default function Deck() {
         ),
       headerRight: () => (
         <View style={Styles.actionBtnRow}>
-          {cardsCheckable && (
+          {cardsCheckable && checkedCardsCount > 0 && (
             <IconButton
               color={white}
               icon="delete"
@@ -138,8 +141,19 @@ export default function Deck() {
           onChangeText={(value) => setDisplayedTitle(value)}
           onSubmitEditing={saveNewTitle}
         />
+        <Text>
+          {cardsCheckable && `${checkedCardsCount} / `}
+          {getFormattedStats(totalCards.length)}
+        </Text>
       </View>
-      <CardList ref={cardList} id={id} navigation={navigation} cardsCheckable={cardsCheckable} />
+      <CardList
+        ref={cardList}
+        id={id}
+        navigation={navigation}
+        cardsCheckable={cardsCheckable}
+        checkedCardsCount={checkedCardsCount}
+        setCheckedCardsCount={setCheckedCardsCount}
+      />
       <SafeAreaView style={Styles.actionBtnRow}>
         <Button
           {...bottomActionBtnProps}

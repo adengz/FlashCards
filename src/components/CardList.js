@@ -1,15 +1,16 @@
 import React, { forwardRef, useState, useImperativeHandle } from 'react';
 import { Animated, Dimensions, View, StyleSheet } from 'react-native';
-import { useTheme, List, Checkbox } from 'react-native-paper';
+import { useTheme, List, Checkbox, Divider } from 'react-native-paper';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { deleteCards } from '../redux/actions/data';
 import { createTwoButtonnAlert } from '../utils/alerts';
 import Styles from '../styles/stylesheet';
-import { darkGray, lightGray, white, gray } from '../styles/palette';
+import { darkGray, lightGray, white } from '../styles/palette';
 
-const CardList = forwardRef(({ id, navigation, cardsCheckable }, ref) => {
+const CardList = forwardRef((props, ref) => {
+  const { id, navigation, cardsCheckable, checkedCardsCount, setCheckedCardsCount } = props;
   const { cards, decks } = useSelector(({ data }) => data);
   const cardsInDeck =
     typeof decks[id] === 'undefined' ? [] : decks[id].cards.map((cardId) => cards[cardId]);
@@ -24,6 +25,7 @@ const CardList = forwardRef(({ id, navigation, cardsCheckable }, ref) => {
   } = useTheme();
 
   const toggleCheckbox = (cardId) => {
+    setCheckedCardsCount(checkedCardsCount + (checkedCards[cardId] ? -1 : 1));
     setCheckedCards({ ...checkedCards, [cardId]: !checkedCards[cardId] });
   };
 
@@ -33,11 +35,16 @@ const CardList = forwardRef(({ id, navigation, cardsCheckable }, ref) => {
   };
 
   useImperativeHandle(ref, () => ({
+    uncheckAllCards() {
+      setCheckedCards(Object.fromEntries(Object.keys(checkedCards).map((k) => [k, false])));
+      setCheckedCardsCount(0);
+    },
     removeCheckedCards() {
       const entries = Object.entries(checkedCards);
       const cardIds = entries.filter(([, v]) => v).map(([k]) => k);
       const removeConfirmed = () => {
         setCheckedCards(Object.fromEntries(entries.filter(([, v]) => !v)));
+        setCheckedCardsCount(0);
         removeCardsFromStore(cardIds);
       };
       if (cardIds.length > 1) {
@@ -64,15 +71,15 @@ const CardList = forwardRef(({ id, navigation, cardsCheckable }, ref) => {
 
   const onSwipeValueChange = (swipeData) => {
     const { key, value } = swipeData;
-    if (value < -Dimensions.get('window').width && !this.animationIsRunning) {
-      this.animationIsRunning = true;
+    if (value < -Dimensions.get('window').width) {
+      // this.animationIsRunning = true;
       Animated.timing(rowTranslateAnimatedValues[key], {
         toValue: 0,
         duration: 200,
         useNativeDriver: false,
       }).start(() => {
         removeCardsFromStore([key]);
-        this.animationIsRunning = false;
+        // this.animationIsRunning = false;
       });
     }
   };
@@ -106,6 +113,7 @@ const CardList = forwardRef(({ id, navigation, cardsCheckable }, ref) => {
                   />
                 )}
                 onPress={() => navigation.navigate('Card', { id, cardId })}
+                disabled={cardsCheckable}
               />
             </Animated.View>
           );
@@ -117,6 +125,9 @@ const CardList = forwardRef(({ id, navigation, cardsCheckable }, ref) => {
             </View>
           </View>
         )}
+        ListHeaderComponent={Divider}
+        ItemSeparatorComponent={Divider}
+        ListFooterComponent={Divider}
         disableRightSwipe
         disableLeftSwipe={cardsCheckable}
         rightOpenValue={-Dimensions.get('window').width}
@@ -132,8 +143,6 @@ export default CardList;
 const styles = StyleSheet.create({
   shownItem: {
     flex: 1,
-    borderBottomWidth: 1,
-    borderBottomColor: gray,
   },
   hiddenItem: {
     flex: 1,
