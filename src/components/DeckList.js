@@ -20,6 +20,7 @@ class DeckList extends Component {
       <View style={[Styles.mainContainer, { alignItems: 'center' }]}>
         <FlatList
           data={deckList}
+          keyExtractor={(item) => item.id}
           renderItem={({ item, index }) => {
             const { id, title, cards } = item;
             const color = colorMap[index % colorMap.length];

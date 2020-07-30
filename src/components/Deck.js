@@ -167,7 +167,7 @@ export default function Deck() {
           onSubmitEditing={saveNewTitle}
         />
         <Text>
-          {cardsCheckable && `${Object.values(checkedCards).filter(Boolean).length} /`}
+          {cardsCheckable && `${Object.values(checkedCards).filter(Boolean).length} / `}
           {getFormattedStats(cards.length)}
         </Text>
       </View>
