@@ -1,26 +1,61 @@
-import React from 'react';
+import React, { forwardRef, useState, useImperativeHandle } from 'react';
 import { Animated, Dimensions, View, StyleSheet } from 'react-native';
 import { useTheme, List, Checkbox } from 'react-native-paper';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { deleteCards } from '../redux/actions/data';
+import { createTwoButtonnAlert } from '../utils/alerts';
 import Styles from '../styles/stylesheet';
 import { darkGray, lightGray, white, gray } from '../styles/palette';
 
-export default function CardList({ id, navigation, cardsCheckable, checkedCards, toggleCheckbox }) {
+const CardList = forwardRef(({ id, navigation, cardsCheckable }, ref) => {
   const { cards, decks } = useSelector(({ data }) => data);
+  const cardsInDeck =
+    typeof decks[id] === 'undefined' ? [] : decks[id].cards.map((cardId) => cards[cardId]);
+  const [checkedCards, setCheckedCards] = useState(
+    Object.fromEntries(cardsInDeck.map((item) => [item.id, false]))
+  );
+
   const dispatch = useDispatch();
   const {
     dark,
     colors: { primary, surface },
   } = useTheme();
 
+  const toggleCheckbox = (cardId) => {
+    setCheckedCards({ ...checkedCards, [cardId]: !checkedCards[cardId] });
+  };
+
+  const removeCardsFromStore = (cardIds) => {
+    // persist storage
+    dispatch(deleteCards({ id, cardIds }));
+  };
+
+  useImperativeHandle(ref, () => ({
+    removeCheckedCards() {
+      const entries = Object.entries(checkedCards);
+      const cardIds = entries.filter(([, v]) => v).map(([k]) => k);
+      const removeConfirmed = () => {
+        setCheckedCards(Object.fromEntries(entries.filter(([, v]) => !v)));
+        removeCardsFromStore(cardIds);
+      };
+      if (cardIds.length > 1) {
+        createTwoButtonnAlert({
+          title: 'Delete Cards',
+          msg: `Are you sure you want to delete these ${cardIds.length} cards? You will lose them permanently.`,
+          confirmText: 'Confirm',
+          confirmOnPress: removeConfirmed,
+        });
+      } else if (cardIds.length === 1) {
+        removeConfirmed();
+      }
+    },
+  }));
+
   if (typeof decks[id] === 'undefined') {
     return null;
   }
-
-  const cardsInDeck = decks[id].cards.map((cardId) => cards[cardId]);
 
   const rowTranslateAnimatedValues = {};
   cardsInDeck.forEach((item) => {
@@ -36,57 +71,52 @@ export default function CardList({ id, navigation, cardsCheckable, checkedCards,
         duration: 200,
         useNativeDriver: false,
       }).start(() => {
-        // persist storage
-        dispatch(deleteCards({ id, cardIds: [key] }));
+        removeCardsFromStore([key]);
         this.animationIsRunning = false;
       });
     }
   };
-
-  const renderItem = ({ item }) => {
-    const { id: cardId, question } = item;
-    return (
-      <Animated.View
-        style={{
-          height: rowTranslateAnimatedValues[cardId].interpolate({
-            inputRange: [0, 1],
-            outputRange: [0, 50],
-          }),
-        }}
-      >
-        <List.Item
-          style={[styles.shownItem, { backgroundColor: surface }]}
-          underlayColor={dark ? darkGray : lightGray}
-          title={question}
-          left={() => (
-            <Checkbox
-              color={primary}
-              disabled={!cardsCheckable}
-              status={checkedCards[cardId] ? 'checked' : 'unchecked'}
-              onPress={() => toggleCheckbox(cardId)}
-            />
-          )}
-          onPress={() => navigation.navigate('Card', { id, cardId })}
-        />
-      </Animated.View>
-    );
-  };
-
-  const renderHiddenItem = () => (
-    <View style={styles.hiddenItem}>
-      <View style={styles.hiddenIcon}>
-        <MaterialCommunityIcons name="delete" color={white} size={24} />
-      </View>
-    </View>
-  );
 
   return (
     <View style={Styles.mainContainer}>
       <SwipeListView
         data={cardsInDeck}
         keyExtractor={(item) => item.id}
-        renderItem={renderItem}
-        renderHiddenItem={renderHiddenItem}
+        renderItem={({ item }) => {
+          const { id: cardId, question } = item;
+          return (
+            <Animated.View
+              style={{
+                height: rowTranslateAnimatedValues[cardId].interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [0, 50],
+                }),
+              }}
+            >
+              <List.Item
+                style={[styles.shownItem, { backgroundColor: surface }]}
+                underlayColor={dark ? darkGray : lightGray}
+                title={question}
+                left={() => (
+                  <Checkbox
+                    color={primary}
+                    disabled={!cardsCheckable}
+                    status={checkedCards[cardId] ? 'checked' : 'unchecked'}
+                    onPress={() => toggleCheckbox(cardId)}
+                  />
+                )}
+                onPress={() => navigation.navigate('Card', { id, cardId })}
+              />
+            </Animated.View>
+          );
+        }}
+        renderHiddenItem={() => (
+          <View style={styles.hiddenItem}>
+            <View style={styles.hiddenIcon}>
+              <MaterialCommunityIcons name="delete" color={white} size={24} />
+            </View>
+          </View>
+        )}
         disableRightSwipe
         disableLeftSwipe={cardsCheckable}
         rightOpenValue={-Dimensions.get('window').width}
@@ -95,7 +125,9 @@ export default function CardList({ id, navigation, cardsCheckable, checkedCards,
       />
     </View>
   );
-}
+});
+
+export default CardList;
 
 const styles = StyleSheet.create({
   shownItem: {

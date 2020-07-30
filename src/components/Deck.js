@@ -1,31 +1,28 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { View, TextInput, SafeAreaView, StyleSheet, Platform } from 'react-native';
-import { useTheme, Menu, IconButton, Text, Divider, Button } from 'react-native-paper';
+import { useTheme, Menu, IconButton, Divider, Button } from 'react-native-paper';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { HeaderBackButton } from '@react-navigation/stack';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateDeckTitle, deleteDeck, deleteCards } from '../redux/actions/data';
+import { updateDeckTitle, deleteDeck } from '../redux/actions/data';
 import { CancelBtn, SaveBtn, MoreBtn } from './HeaderButtons';
 import CardList from './CardList';
 import { createTwoButtonnAlert } from '../utils/alerts';
-import { getFormattedStats } from '../utils/helpers';
 import Styles from '../styles/stylesheet';
 import { white } from '../styles/palette';
 
 export default function Deck() {
   const { id } = useRoute().params;
-  const { title: currTitle = '', cards = [] } = useSelector(({ data }) =>
+  const { title: currTitle = '' } = useSelector(({ data }) =>
     typeof data.decks[id] === 'undefined' ? {} : data.decks[id]
   );
 
   const titleBox = useRef(null);
+  const cardList = useRef();
   const [displayedTitle, setDisplayedTitle] = useState(currTitle);
   const [moreMenuVisible, setMoreMenuVisible] = useState(false);
   const [titleEditable, setTitleEditable] = useState(false);
   const [cardsCheckable, setCardsCheckable] = useState(false);
-  const [checkedCards, setCheckedCards] = useState(
-    Object.fromEntries(cards.map((cardId) => [cardId, false]))
-  );
   const { primary } = useTheme().colors;
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -38,12 +35,6 @@ export default function Deck() {
     setDisplayedTitle(currTitle);
     setTitleEditable(false);
     setCardsCheckable(false);
-    setCheckedCards(Object.fromEntries(cards.map((cardId) => [cardId, false])));
-  };
-
-  const startEditTitle = () => {
-    setTitleEditable(true);
-    setTimeout(() => titleBox.current.focus(), 0);
   };
 
   const saveNewTitle = () => {
@@ -55,30 +46,6 @@ export default function Deck() {
       dispatch(updateDeckTitle({ id, title }));
     }
     setTitleEditable(false);
-  };
-
-  const toggleCheckbox = (cardId) => {
-    setCheckedCards({ ...checkedCards, [cardId]: !checkedCards[cardId] });
-  };
-
-  const removeCards = () => {
-    const entries = Object.entries(checkedCards);
-    const cardIds = entries.filter(([, v]) => v).map(([k]) => k);
-    const removeConfirmed = () => {
-      setCheckedCards(Object.fromEntries(entries.filter(([, v]) => !v)));
-      // persist storage
-      dispatch(deleteCards({ id, cardIds }));
-    };
-    if (cardIds.length > 1) {
-      createTwoButtonnAlert({
-        title: 'Delete Cards',
-        msg: `Are you sure you want to delete these ${cardIds.length} cards? You will lose them permanently.`,
-        confirmText: 'Confirm',
-        confirmOnPress: removeConfirmed,
-      });
-    } else {
-      removeConfirmed();
-    }
   };
 
   const removeDeck = () => {
@@ -104,8 +71,12 @@ export default function Deck() {
         ),
       headerRight: () => (
         <View style={Styles.actionBtnRow}>
-          {cardsCheckable && Object.values(checkedCards).filter(Boolean).length > 0 && (
-            <IconButton color={white} icon="delete" onPress={removeCards} />
+          {cardsCheckable && (
+            <IconButton
+              color={white}
+              icon="delete"
+              onPress={() => cardList.current.removeCheckedCards()}
+            />
           )}
           {titleEditable ? (
             <SaveBtn onPress={saveNewTitle} />
@@ -127,7 +98,8 @@ export default function Deck() {
                 icon="square-edit-outline"
                 onPress={() => {
                   toggleMoreMenu();
-                  startEditTitle();
+                  setTitleEditable(true);
+                  setTimeout(() => titleBox.current.focus(), 0);
                 }}
               />
               <Menu.Item
@@ -166,18 +138,8 @@ export default function Deck() {
           onChangeText={(value) => setDisplayedTitle(value)}
           onSubmitEditing={saveNewTitle}
         />
-        <Text>
-          {cardsCheckable && `${Object.values(checkedCards).filter(Boolean).length} / `}
-          {getFormattedStats(cards.length)}
-        </Text>
       </View>
-      <CardList
-        id={id}
-        navigation={navigation}
-        cardsCheckable={cardsCheckable}
-        checkedCards={checkedCards}
-        toggleCheckbox={toggleCheckbox}
-      />
+      <CardList ref={cardList} id={id} navigation={navigation} cardsCheckable={cardsCheckable} />
       <SafeAreaView style={Styles.actionBtnRow}>
         <Button
           {...bottomActionBtnProps}
