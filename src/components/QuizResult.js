@@ -1,11 +1,15 @@
 import React from 'react';
 import { View, Platform, StyleSheet } from 'react-native';
-import { Text, Button } from 'react-native-paper';
+import { useTheme, Text, Button } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
+import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import Styles from '../styles/stylesheet';
+import { green } from '../styles/palette';
 
 export default function QuizResult({ totalCards, correctCount }) {
   const navigation = useNavigation();
+  const { surface } = useTheme().colors;
+  const percent = Math.round((correctCount / totalCards) * 100);
 
   return (
     <View style={Styles.quizContainer}>
@@ -15,6 +19,16 @@ export default function QuizResult({ totalCards, correctCount }) {
           {correctCount} / {totalCards} correct
         </Text>
       </View>
+      <AnimatedCircularProgress
+        size={300}
+        width={30}
+        fill={percent}
+        rotation={0}
+        tintColor={green}
+        children={(fill) => <Text style={styles.fill}>{`${Math.round(fill)}%`}</Text>}
+        backgroundColor={surface}
+        duration={1000}
+      />
       <View>
         <Button
           {...bottomActionBtnProps}
@@ -41,9 +55,13 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 40,
+    paddingBottom: 10,
   },
   stats: {
     fontSize: 24,
+  },
+  fill: {
+    fontSize: 60,
   },
 });
 
