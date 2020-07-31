@@ -185,23 +185,11 @@ const styles = StyleSheet.create({
     ...Styles.deckTitleInput,
     fontSize: 40,
   },
-  bottomActionBtn: {
-    flex: 1,
-    margin: 10,
-    ...Platform.select({
-      ios: {
-        elevation: 0,
-      },
-    }),
-  },
-  bottomActionBtnLabel: {
-    fontSize: 18,
-  },
 });
 
 const bottomActionBtnProps = {
-  style: styles.bottomActionBtn,
-  labelStyle: styles.bottomActionBtnLabel,
+  style: [Styles.bottomActionBtn, { flex: 1 }],
+  labelStyle: { fontSize: 18 },
   uppercase: OS === 'android',
 };
 

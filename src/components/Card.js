@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, TextInput, StyleSheet } from 'react-native';
+import { View, Platform, TextInput, StyleSheet } from 'react-native';
 import { useTheme, Card as PaperCard, Title, IconButton } from 'react-native-paper';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { HeaderBackButton } from '@react-navigation/stack';
@@ -87,7 +87,10 @@ export default function Card() {
 
   return (
     <View style={Styles.mainContainer}>
-      <PaperCard style={[styles.card, { backgroundColor: surface }]}>
+      <PaperCard
+        style={[styles.card, { backgroundColor: surface }]}
+        elevation={Platform.OS === 'ios' ? 0 : 1}
+      >
         <PaperCard.Content style={styles.content}>
           <Title style={styles.label}>Question:</Title>
           <TextInput
