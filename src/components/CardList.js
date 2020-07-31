@@ -9,6 +9,8 @@ import { createTwoButtonnAlert } from '../utils/alerts';
 import Styles from '../styles/stylesheet';
 import { darkGray, lightGray, white } from '../styles/palette';
 
+const rowTranslateAnimatedValues = {};
+
 const CardList = forwardRef((props, ref) => {
   const { id, navigation, cardsCheckable, checkedCardsCount, setCheckedCardsCount } = props;
   const { cards, decks } = useSelector(({ data }) => data);
@@ -23,15 +25,32 @@ const CardList = forwardRef((props, ref) => {
     dark,
     colors: { primary, surface },
   } = useTheme();
+  const [animationIsRunning, setAnimationIsRunning] = useState(false);
+
+  cardsInDeck.forEach((item) => {
+    rowTranslateAnimatedValues[item.id] = new Animated.Value(1);
+  });
 
   const toggleCheckbox = (cardId) => {
     setCheckedCardsCount(checkedCardsCount + (checkedCards[cardId] ? -1 : 1));
     setCheckedCards({ ...checkedCards, [cardId]: !checkedCards[cardId] });
   };
 
-  const removeCardsFromStore = (cardIds) => {
-    // persist storage
-    dispatch(deleteCards({ id, cardIds }));
+  const removeCards = (cardIds) => {
+    setAnimationIsRunning(true);
+    Animated.parallel(
+      cardIds.map((cardId) =>
+        Animated.timing(rowTranslateAnimatedValues[cardId], {
+          toValue: 0,
+          duration: 200,
+          useNativeDriver: false,
+        })
+      )
+    ).start(() => {
+      // persist storage
+      dispatch(deleteCards({ id, cardIds }));
+      setAnimationIsRunning(false);
+    });
   };
 
   useImperativeHandle(ref, () => ({
@@ -45,7 +64,7 @@ const CardList = forwardRef((props, ref) => {
       const removeConfirmed = () => {
         setCheckedCards(Object.fromEntries(entries.filter(([, v]) => !v)));
         setCheckedCardsCount(0);
-        removeCardsFromStore(cardIds);
+        removeCards(cardIds);
       };
       if (cardIds.length > 1) {
         createTwoButtonnAlert({
@@ -55,7 +74,7 @@ const CardList = forwardRef((props, ref) => {
           confirmOnPress: removeConfirmed,
         });
       } else if (cardIds.length === 1) {
-        removeConfirmed();
+        setTimeout(removeConfirmed, 0);
       }
     },
   }));
@@ -64,23 +83,10 @@ const CardList = forwardRef((props, ref) => {
     return null;
   }
 
-  const rowTranslateAnimatedValues = {};
-  cardsInDeck.forEach((item) => {
-    rowTranslateAnimatedValues[item.id] = new Animated.Value(1);
-  });
-
   const onSwipeValueChange = (swipeData) => {
     const { key, value } = swipeData;
-    if (value < -Dimensions.get('window').width) {
-      // this.animationIsRunning = true;
-      Animated.timing(rowTranslateAnimatedValues[key], {
-        toValue: 0,
-        duration: 200,
-        useNativeDriver: false,
-      }).start(() => {
-        removeCardsFromStore([key]);
-        // this.animationIsRunning = false;
-      });
+    if (value < -Dimensions.get('window').width && !animationIsRunning) {
+      removeCards([key]);
     }
   };
 
@@ -133,6 +139,8 @@ const CardList = forwardRef((props, ref) => {
         rightOpenValue={-Dimensions.get('window').width}
         onSwipeValueChange={onSwipeValueChange}
         useNativeDriver={false}
+        previewRowKey={cardsInDeck[0].id}
+        previewOpenValue={-55}
       />
     </View>
   );
