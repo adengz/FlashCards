@@ -6,6 +6,7 @@ import Home from '../components/Home';
 import Settings from '../components/Settings';
 import Deck from '../components/Deck';
 import Card from '../components/Card';
+import Quiz from '../components/Quiz';
 import { white } from '../styles/palette';
 
 const Stack = createStackNavigator();
@@ -30,6 +31,11 @@ const screens = {
     name: 'Card',
     component: Card,
     options: { headerTitle: null },
+  },
+  Quiz: {
+    name: 'Quiz',
+    component: Quiz,
+    options: { title: 'Quiz' },
   },
 };
 

@@ -167,7 +167,8 @@ export default function Deck() {
           mode="contained"
           icon="cards"
           children="Start Quiz"
-          onPress={() => console.log('start quiz')}
+          onPress={() => navigation.navigate('Quiz', { id })}
+          disabled={totalCards.length === 0}
         />
       </SafeAreaView>
     </View>

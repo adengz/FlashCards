@@ -139,7 +139,7 @@ const CardList = forwardRef((props, ref) => {
         rightOpenValue={-Dimensions.get('window').width}
         onSwipeValueChange={onSwipeValueChange}
         useNativeDriver={false}
-        previewRowKey={cardsInDeck[0].id}
+        previewRowKey={cardsInDeck.length > 0 ? cardsInDeck[0].id : null}
         previewOpenValue={-55}
       />
     </View>
