@@ -6,17 +6,17 @@ import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import Styles from '../styles/stylesheet';
 import { green } from '../styles/palette';
 
-export default function QuizResult({ totalCards, correctCount }) {
+export default function QuizResult({ total, correct, startOver }) {
   const navigation = useNavigation();
   const { surface } = useTheme().colors;
-  const percent = Math.round((correctCount / totalCards) * 100);
+  const percent = Math.round((correct / total) * 100);
 
   return (
-    <View style={Styles.quizContainer}>
+    <View style={[Styles.quizContainer, { alignItems: 'center' }]}>
       <View style={styles.headerContainer}>
         <Text style={styles.header}>Quiz Completed!</Text>
         <Text style={styles.stats}>
-          {correctCount} / {totalCards} correct
+          {correct} / {total} correct
         </Text>
       </View>
       <AnimatedCircularProgress
@@ -42,7 +42,7 @@ export default function QuizResult({ totalCards, correctCount }) {
           mode="contained"
           icon="restart"
           children="Start Over"
-          onPress={() => console.log('start over')}
+          onPress={startOver}
         />
       </View>
     </View>

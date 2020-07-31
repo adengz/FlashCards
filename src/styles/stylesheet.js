@@ -27,7 +27,6 @@ const Styles = StyleSheet.create({
   quizContainer: {
     flex: 1,
     justifyContent: 'space-around',
-    alignItems: 'center',
   },
 });
 

@@ -149,7 +149,6 @@ export default function Deck() {
       <CardList
         ref={cardList}
         id={id}
-        navigation={navigation}
         cardsCheckable={cardsCheckable}
         checkedCardsCount={checkedCardsCount}
         setCheckedCardsCount={setCheckedCardsCount}

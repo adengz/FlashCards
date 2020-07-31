@@ -1,6 +1,7 @@
 import React, { forwardRef, useState, useImperativeHandle } from 'react';
 import { Animated, Dimensions, View, StyleSheet } from 'react-native';
 import { useTheme, List, Checkbox, Divider } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useSelector, useDispatch } from 'react-redux';
@@ -12,7 +13,7 @@ import { darkGray, lightGray, white } from '../styles/palette';
 const rowTranslateAnimatedValues = {};
 
 const CardList = forwardRef((props, ref) => {
-  const { id, navigation, cardsCheckable, checkedCardsCount, setCheckedCardsCount } = props;
+  const { id, cardsCheckable, checkedCardsCount, setCheckedCardsCount } = props;
   const { cards, decks } = useSelector(({ data }) => data);
   const cardsInDeck =
     typeof decks[id] === 'undefined' ? [] : decks[id].cards.map((cardId) => cards[cardId]);
@@ -20,6 +21,7 @@ const CardList = forwardRef((props, ref) => {
     Object.fromEntries(cardsInDeck.map((item) => [item.id, false]))
   );
 
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   const {
     dark,
