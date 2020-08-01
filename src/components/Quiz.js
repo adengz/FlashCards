@@ -1,16 +1,23 @@
 import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { ProgressBar, Card, IconButton, withTheme } from 'react-native-paper';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { ProgressBar, Title, Paragraph, IconButton, withTheme } from 'react-native-paper';
+import CardStack from 'react-native-card-stack-swiper';
+import CardFlip from 'react-native-card-flip';
 import { connect } from 'react-redux';
 import QuizResult from './QuizResult';
 import Styles from '../styles/stylesheet';
-import { red, green, white } from '../styles/palette';
+import { colorMap, red, green, white } from '../styles/palette';
 
 class Quiz extends Component {
   constructor(props) {
     super(props);
     this.state = { total: 0, correct: 0 };
+    this.shuffleCards();
   }
+
+  shuffleCards = () => {
+    this.props.cardsInDeck.sort(() => 0.5 - Math.random());
+  };
 
   showNext = (correct) => {
     this.setState((currState) => ({
@@ -20,39 +27,88 @@ class Quiz extends Component {
   };
 
   startOver = () => {
+    this.shuffleCards();
     this.setState({ total: 0, correct: 0 });
   };
 
   render() {
     const {
-      cards,
+      cardsInDeck,
       theme: {
-        colors: { primary, surface },
+        dark,
+        roundness,
+        colors: { primary, surface, text },
       },
     } = this.props;
     const { total } = this.state;
 
-    if (total === cards.length) {
+    if (total === cardsInDeck.length) {
       return <QuizResult {...this.state} startOver={this.startOver} />;
     }
 
     return (
       <View style={Styles.quizContainer}>
         <View style={styles.progressBarContainer}>
-          <ProgressBar style={styles.progressBar} progress={total / cards.length} />
+          <ProgressBar style={styles.progressBar} progress={total / cardsInDeck.length} />
         </View>
-        <Card style={{ margin: 10 }}>
-          <Card.Content style={{ height: 400 }} />
-        </Card>
+        <CardStack
+          ref={(swiper) => {
+            this.swiper = swiper;
+          }}
+          style={styles.cardStack}
+          renderNoMoreCards={() => null}
+          onSwipedLeft={() => this.showNext(false)}
+          onSwipedRight={() => this.showNext(true)}
+          verticalSwipe={false}
+        >
+          {cardsInDeck.map((item, index) => {
+            const { id, question, answer } = item;
+            const colorIndex = (index * 2) % colorMap.length;
+            const [frontColor, backColor] = colorMap.slice(colorIndex, colorIndex + 2);
+            return (
+              <CardFlip
+                key={id}
+                ref={(card) => {
+                  this[`card${index}`] = card;
+                }}
+                style={[styles.cardContainer]}
+              >
+                <TouchableOpacity
+                  activeOpacity={1}
+                  style={[
+                    Styles.flipCard,
+                    { backgroundColor: dark ? surface : frontColor, borderRadius: roundness },
+                  ]}
+                  onPress={() => this[`card${index}`].flip()}
+                >
+                  <Title style={{ color: dark ? frontColor : text }}>Question:</Title>
+                  <Paragraph style={styles.paragraph}>{question}</Paragraph>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  activeOpacity={1}
+                  style={[
+                    Styles.flipCard,
+                    { backgroundColor: dark ? surface : backColor, borderRadius: roundness },
+                  ]}
+                  onPress={() => this[`card${index}`].flip()}
+                >
+                  <Title style={{ color: dark ? backColor : text }}>Answer:</Title>
+                  <Paragraph style={styles.paragraph}>{answer}</Paragraph>
+                </TouchableOpacity>
+              </CardFlip>
+            );
+          })}
+        </CardStack>
         <View style={styles.actionBtnContainer}>
-          <AnswerBtn correct={false} onPress={() => this.showNext(false)} />
+          <AnswerBtn correct={false} onPress={() => this.swiper.swipeLeft()} />
           <IconButton
             size={30}
             color={surface}
             style={[styles.flipBtn, { backgroundColor: primary }]}
             icon="rotate-3d-variant"
+            onPress={() => this[`card${total}`].flip()}
           />
-          <AnswerBtn correct onPress={() => this.showNext(true)} />
+          <AnswerBtn correct onPress={() => this.swiper.swipeRight()} />
         </View>
       </View>
     );
@@ -67,7 +123,7 @@ const mapStateToProps = ({ data }, { route }) => {
     },
     cards,
   } = data;
-  return { cards: cardIds.map((cardId) => cards[cardId]) };
+  return { cardsInDeck: cardIds.map((cardId) => cards[cardId]) };
 };
 
 export default withTheme(connect(mapStateToProps)(Quiz));
@@ -92,6 +148,19 @@ const styles = StyleSheet.create({
   },
   progressBar: {
     height: 20,
+  },
+  cardStack: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 100,
+  },
+  cardContainer: {
+    ...Styles.flipCardContainer,
+    height: Styles.flipCardContainer.width,
+  },
+  paragraph: {
+    fontSize: 18,
+    paddingHorizontal: 20,
   },
   actionBtnContainer: {
     flexDirection: 'row',

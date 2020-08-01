@@ -1,11 +1,18 @@
-import { StyleSheet, Platform } from 'react-native';
+import { StyleSheet, Dimensions, Platform } from 'react-native';
 
 const Styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
   },
-  actionBtnRow: {
-    flexDirection: 'row',
+  flipCardContainer: {
+    width: Dimensions.get('window').width * 0.9,
+  },
+  flipCard: {
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 4,
   },
   deckTitleContainer: {
     flexDirection: 'row',
@@ -15,6 +22,9 @@ const Styles = StyleSheet.create({
     flex: 1,
     margin: 5,
     fontSize: 20,
+  },
+  actionBtnRow: {
+    flexDirection: 'row',
   },
   bottomActionBtn: {
     margin: 5,
