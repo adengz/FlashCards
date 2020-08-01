@@ -48,7 +48,7 @@ export const reactQAs = [
   ],
   [
     'What are virtual DOMs and how do they work?',
-    'When web browsers render HTML documents and turn them into a website or application on a screen, they create a representational tree of how the site or app is arranged called a Document Object Model (DOM). Without React, your website or app will use HTML to update its DOM in order to make things “change” on screen without users needing to manually refresh a page. React JS takes a different approach by creating a Virtual DOM—a copy of the site’s “actual” DOM. React uses this copy to determine what parts of the actual DOM need to change based on a user’s action. React then takes the change date from the Virtual DOM and selectively updates the actual DOM (versus reloading the entire thing). Over time, this leads to significant performance improvements for the website or application.',
+    'A Virtual DOM is a copy of the site’s “actual” DOM. React uses this copy to determine what parts of the actual DOM need to change based on a user’s action. React takes the change date from the Virtual DOM and selectively updates the actual DOM (versus reloading the entire thing). Over time, this leads to significant performance improvements for the website or application.',
   ],
   [
     'React JS vs React Native—What’s the difference?',

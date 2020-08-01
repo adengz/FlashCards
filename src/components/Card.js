@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Platform, TextInput, StyleSheet } from 'react-native';
+import { View, Platform, ScrollView, TextInput, StyleSheet } from 'react-native';
 import { useTheme, Card as PaperCard, Title, IconButton } from 'react-native-paper';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { HeaderBackButton } from '@react-navigation/stack';
@@ -93,38 +93,44 @@ export default function Card() {
       >
         <PaperCard.Content style={styles.content}>
           <Title style={styles.label}>Question:</Title>
-          <TextInput
-            ref={questionBox}
-            style={[
-              styles.input,
-              {
-                backgroundColor: editable ? background : surface,
-                color: text,
-                borderRadius: roundness,
-              },
-            ]}
-            multiline
-            onChangeText={(value) => setDisplayedQuestion(value)}
-            value={displayedQuestion}
-            editable={editable}
-          />
+          <ScrollView style={styles.inputContainer}>
+            <TextInput
+              ref={questionBox}
+              style={[
+                styles.input,
+                {
+                  backgroundColor: editable ? background : surface,
+                  color: text,
+                  borderRadius: roundness,
+                },
+              ]}
+              multiline
+              maxLength={500}
+              onChangeText={(value) => setDisplayedQuestion(value)}
+              value={displayedQuestion}
+              editable={editable}
+            />
+          </ScrollView>
         </PaperCard.Content>
         <PaperCard.Content style={styles.content}>
           <Title style={styles.label}>Answer:</Title>
-          <TextInput
-            style={[
-              styles.input,
-              {
-                backgroundColor: editable ? background : surface,
-                color: text,
-                borderRadius: roundness,
-              },
-            ]}
-            multiline
-            onChangeText={(value) => setDisplayedAnswer(value)}
-            value={displayedAnswer}
-            editable={editable}
-          />
+          <ScrollView style={styles.inputContainer}>
+            <TextInput
+              style={[
+                styles.input,
+                {
+                  backgroundColor: editable ? background : surface,
+                  color: text,
+                  borderRadius: roundness,
+                },
+              ]}
+              multiline
+              maxLength={500}
+              onChangeText={(value) => setDisplayedAnswer(value)}
+              value={displayedAnswer}
+              editable={editable}
+            />
+          </ScrollView>
         </PaperCard.Content>
         {typeof cardId !== 'undefined' && (
           <IconButton
@@ -150,6 +156,9 @@ const styles = StyleSheet.create({
   },
   label: {
     textDecorationLine: 'underline',
+  },
+  inputContainer: {
+    height: 100,
   },
   input: {
     paddingVertical: 5,
