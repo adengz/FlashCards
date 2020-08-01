@@ -1,4 +1,4 @@
-export const jsQAs = [
+const jsQAs = [
   [
     'What is the drawback of using a type of bar ===” object” in order to determine if the bar is an object? What measures would you take to avoid this?',
     'The above statement can be used to check if a bar is an object but this poses the problem that even null will also be considered as the object. So the code will log to true instead of false. So, a better way to do this is to apply a check for the null keyword also.',
@@ -25,7 +25,7 @@ export const jsQAs = [
   ],
 ];
 
-export const reactQAs = [
+const reactQAs = [
   [
     'What is React JS?',
     'React JS is a front end JavaScript library for building web and mobile user interfaces (TK). It was developed by Facebook in 2011. React allows developers to build reusable UI components. It has the support of a large, open source community.',
@@ -68,7 +68,7 @@ export const reactQAs = [
   ],
 ];
 
-export const reactNativeQAs = [
+const reactNativeQAs = [
   [
     'What is React Native?',
     'React Native is a mobile app development platform that allows you to create android and ios apps only using Javascript. React Native uses the same fundamental UI building blocks as regular iOS and Android apps so applications created using React Native are indistinguishable from an app built using Objective-C or Java.',
@@ -98,3 +98,93 @@ export const reactNativeQAs = [
     'React Native Platform module is used to detect the platform of device in which the application is running.',
   ],
 ];
+
+const now = Date.now();
+const mockData = {
+  decks: {
+    deck_js: {
+      id: 'deck_js',
+      title: 'JavaScript',
+      timestamp: now,
+      cards: jsQAs.map((qa, index) => `card_js${index}`),
+    },
+    deck_rn: {
+      id: 'deck_rn',
+      title: 'React Native',
+      timestamp: now + 1,
+      cards: reactNativeQAs.map((qa, index) => `card_rn${index}`),
+    },
+    deck_react: {
+      id: 'deck_react',
+      title: 'React',
+      timestamp: now + 2,
+      cards: reactQAs.map((qa, index) => `card_react${index}`),
+    },
+    deck_es6: {
+      id: 'deck_es6',
+      title: 'ES6',
+      timestamp: now + 3,
+      cards: [],
+    },
+    deck_vue: {
+      id: 'deck_vue',
+      title: 'Vue',
+      timestamp: now + 4,
+      cards: [],
+    },
+    deck_ng: {
+      id: 'deck_ng',
+      title: 'Angular',
+      timestamp: now + 5,
+      cards: [],
+    },
+    deck_uiux: {
+      id: 'deck_uiux',
+      title: 'UI/UX',
+      timestamp: now + 6,
+      cards: [],
+    },
+    deck_fe: {
+      id: 'deck_fe',
+      title: 'Frontend',
+      timestamp: now + 7,
+      cards: [],
+    },
+    deck_node: {
+      id: 'deck_node',
+      title: 'Node.js',
+      timestamp: now + 8,
+      cards: [],
+    },
+    deck_be: {
+      id: 'deck_be',
+      title: 'Backend',
+      timestamp: now + 9,
+      cards: [],
+    },
+  },
+  cards: {},
+};
+jsQAs.forEach((qa, index) => {
+  mockData.cards[`card_js${index}`] = {
+    id: `card_js${index}`,
+    question: qa[0],
+    answer: qa[1],
+  };
+});
+reactNativeQAs.forEach((qa, index) => {
+  mockData.cards[`card_rn${index}`] = {
+    id: `card_rn${index}`,
+    question: qa[0],
+    answer: qa[1],
+  };
+});
+reactQAs.forEach((qa, index) => {
+  mockData.cards[`card_react${index}`] = {
+    id: `card_react${index}`,
+    question: qa[0],
+    answer: qa[1],
+  };
+});
+
+export default mockData;
