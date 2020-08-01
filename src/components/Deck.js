@@ -159,14 +159,20 @@ export default function Deck() {
           mode="outlined"
           icon="plus-circle"
           children="Add a Card"
-          onPress={() => navigation.navigate('Card', { id })}
+          onPress={() => {
+            cancelOperations();
+            navigation.navigate('Card', { id });
+          }}
         />
         <Button
           {...bottomActionBtnProps}
           mode="contained"
           icon="cards"
           children="Start Quiz"
-          onPress={() => navigation.navigate('Quiz', { id })}
+          onPress={() => {
+            cancelOperations();
+            navigation.navigate('Quiz', { id });
+          }}
           disabled={totalCards.length === 0}
         />
       </SafeAreaView>
