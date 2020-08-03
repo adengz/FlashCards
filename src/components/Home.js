@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, Platform } from 'react-native';
+import { View, KeyboardAvoidingView, Platform } from 'react-native';
 import { IconButton, Menu } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
+import { useHeaderHeight } from '@react-navigation/stack';
 import { useSelector, useDispatch } from 'react-redux';
 import { reverseDeckOrder } from '../redux/actions/settings';
 import { MoreBtn } from './HeaderButtons';
@@ -16,6 +17,7 @@ export default function Home() {
   const [sortingOptionsVisible, setSortingOptionsVisible] = useState(false);
 
   const navigation = useNavigation();
+  const headerHeight = useHeaderHeight();
   const { descending } = useSelector(({ settings }) => settings.sortDecks);
   const dispatch = useDispatch();
 
@@ -60,16 +62,17 @@ export default function Home() {
   });
 
   return (
-    <View style={Styles.mainContainer}>
-      {OS === 'ios' && <NewDeck />}
+    <KeyboardAvoidingView
+      style={Styles.mainContainer}
+      behavior={Platform.OS === 'ios' ? 'padding' : null}
+      keyboardVerticalOffset={headerHeight}
+    >
       <DeckList navigation={navigation} />
-      {OS === 'android' && <NewDeck />}
+      <NewDeck />
       <DeckSortingOptions
         visible={sortingOptionsVisible}
         hide={() => setSortingOptionsVisible(false)}
       />
-    </View>
+    </KeyboardAvoidingView>
   );
 }
-
-const { OS } = Platform;

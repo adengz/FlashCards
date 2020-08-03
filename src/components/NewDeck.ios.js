@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, StyleSheet } from 'react-native';
+import { SafeAreaView, TextInput, StyleSheet } from 'react-native';
 import { useTheme, Button } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
 import { addDeck } from '../redux/actions/data';
@@ -25,7 +25,7 @@ export default function NewDeckIOS() {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <TextInput
         style={[styles.input, { backgroundColor: surface, color: text, borderRadius: roundness }]}
         placeholderTextColor={gray}
@@ -44,7 +44,7 @@ export default function NewDeckIOS() {
         onPress={submit}
         disabled={typedTitle === ''}
       />
-    </View>
+    </SafeAreaView>
   );
 }
 
