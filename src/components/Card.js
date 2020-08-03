@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Platform, ScrollView, TextInput, StyleSheet } from 'react-native';
+import { KeyboardAvoidingView, Platform, ScrollView, TextInput, StyleSheet } from 'react-native';
 import { useTheme, Card as PaperCard, Title, IconButton } from 'react-native-paper';
 import { useRoute, useNavigation } from '@react-navigation/native';
-import { HeaderBackButton } from '@react-navigation/stack';
+import { HeaderBackButton, useHeaderHeight } from '@react-navigation/stack';
 import { useSelector, useDispatch } from 'react-redux';
 import { addCard, updateCard, deleteCards } from '../redux/actions/data';
 import { CancelBtn, SaveBtn, EditBtn } from './HeaderButtons';
@@ -23,6 +23,7 @@ export default function Card() {
   const [editable, setEditable] = useState(false);
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const headerHeight = useHeaderHeight();
   const {
     roundness,
     colors: { text, background, surface },
@@ -86,7 +87,11 @@ export default function Card() {
   }, []);
 
   return (
-    <View style={Styles.mainContainer}>
+    <KeyboardAvoidingView
+      style={[Styles.mainContainer, { justifyContent: 'center' }]}
+      behavior={Platform.OS === 'ios' ? 'padding' : null}
+      keyboardVerticalOffset={headerHeight}
+    >
       <PaperCard
         style={[styles.card, { backgroundColor: surface }]}
         elevation={Platform.OS === 'ios' ? 0 : 1}
@@ -132,18 +137,16 @@ export default function Card() {
             />
           </ScrollView>
         </PaperCard.Content>
-        {typeof cardId !== 'undefined' && (
-          <IconButton
-            style={styles.deleteBtn}
-            icon="delete"
-            size={30}
-            color="red"
-            disabled={editable}
-            onPress={removeCard}
-          />
-        )}
+        <IconButton
+          style={styles.deleteBtn}
+          icon={typeof cardId === 'undefined' ? '' : 'delete'}
+          size={30}
+          color="red"
+          disabled={editable}
+          onPress={removeCard}
+        />
       </PaperCard>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -158,9 +161,10 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
   },
   inputContainer: {
-    height: 100,
+    height: 150,
   },
   input: {
+    paddingHorizontal: 10,
     paddingVertical: 5,
     marginHorizontal: 5,
     fontSize: 18,
