@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
-import { ProgressBar, Title, Paragraph, IconButton, withTheme } from 'react-native-paper';
+import { ProgressBar, Paragraph, Title, IconButton, withTheme } from 'react-native-paper';
 import CardStack from 'react-native-card-stack-swiper';
 import CardFlip from 'react-native-card-flip';
 import { connect } from 'react-redux';
@@ -49,7 +49,8 @@ class Quiz extends Component {
     return (
       <View style={Styles.quizContainer}>
         <View style={styles.progressBarContainer}>
-          <ProgressBar style={styles.progressBar} progress={total / cardsInDeck.length} />
+          <Paragraph>Progress:</Paragraph>
+          <ProgressBar style={styles.progressBar} progress={(total + 1) / cardsInDeck.length} />
         </View>
         <CardStack
           ref={(swiper) => {

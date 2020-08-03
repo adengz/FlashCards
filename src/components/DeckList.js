@@ -14,7 +14,6 @@ class DeckList extends Component {
       navigation,
       theme: { dark, colors, roundness },
     } = this.props;
-    styles.title = { fontWeight: dark ? 'bold' : 'normal' };
 
     return (
       <View style={[Styles.mainContainer, { alignItems: 'center' }]}>
@@ -43,7 +42,13 @@ class DeckList extends Component {
                       { backgroundColor: dark ? colors.surface : color, borderRadius: roundness },
                     ]}
                   >
-                    <Headline style={[styles.title, { color: dark ? color : colors.text }]}>
+                    <Headline
+                      style={[
+                        styles.deckTitle,
+                        { color: dark ? color : colors.text, fontWeight: dark ? 'bold' : 'normal' },
+                      ]}
+                      numberOfLines={1}
+                    >
                       {title}
                     </Headline>
                     <Subheading>{getFormattedStats(cards.length)}</Subheading>
@@ -89,5 +94,8 @@ const styles = StyleSheet.create({
     height: 128,
     marginVertical: 5,
     marginHorizontal: 15,
+  },
+  deckTitle: {
+    paddingHorizontal: 10,
   },
 });

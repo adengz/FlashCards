@@ -113,12 +113,13 @@ const CardList = forwardRef((props, ref) => {
                 underlayColor={dark ? darkGray : lightGray}
                 title={question}
                 left={() => (
-                  <Checkbox
-                    color={primary}
-                    disabled={!cardsCheckable}
-                    status={checkedCards[cardId] ? 'checked' : 'unchecked'}
-                    onPress={() => toggleCheckbox(cardId)}
-                  />
+                  <View style={{ display: cardsCheckable ? 'flex' : 'none' }}>
+                    <Checkbox
+                      color={primary}
+                      status={checkedCards[cardId] ? 'checked' : 'unchecked'}
+                      onPress={() => toggleCheckbox(cardId)}
+                    />
+                  </View>
                 )}
                 onPress={() => navigation.navigate('Card', { id, cardId })}
                 disabled={cardsCheckable}

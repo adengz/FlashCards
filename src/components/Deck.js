@@ -141,7 +141,7 @@ export default function Deck() {
           onChangeText={(value) => setDisplayedTitle(value)}
           onSubmitEditing={saveNewTitle}
         />
-        <Text>
+        <Text style={styles.stats}>
           {cardsCheckable && `${checkedCardsCount} / `}
           {getFormattedStats(totalCards.length)}
         </Text>
@@ -189,6 +189,11 @@ const styles = StyleSheet.create({
   deckTitleInput: {
     ...Styles.deckTitleInput,
     fontSize: 40,
+    paddingHorizontal: 0,
+    marginHorizontal: 0,
+  },
+  stats: {
+    paddingLeft: 10,
   },
 });
 

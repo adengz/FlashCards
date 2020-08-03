@@ -22,6 +22,7 @@ const Styles = StyleSheet.create({
     flex: 1,
     margin: 5,
     fontSize: 20,
+    paddingHorizontal: 10,
   },
   actionBtnRow: {
     flexDirection: 'row',
