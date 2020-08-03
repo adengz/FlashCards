@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
-import { ProgressBar, Paragraph, Title, IconButton, withTheme } from 'react-native-paper';
+import { View, ScrollView, Platform, StyleSheet } from 'react-native';
+import { ProgressBar, Paragraph, Title, Button, IconButton, withTheme } from 'react-native-paper';
 import CardStack from 'react-native-card-stack-swiper';
 import CardFlip from 'react-native-card-flip';
 import { connect } from 'react-redux';
@@ -17,6 +17,10 @@ class Quiz extends Component {
 
   shuffleCards = () => {
     this.props.cardsInDeck.sort(() => 0.5 - Math.random());
+  };
+
+  flipCard = () => {
+    this[`card${this.state.total}`].flip();
   };
 
   showNext = (correct) => {
@@ -37,7 +41,7 @@ class Quiz extends Component {
       theme: {
         dark,
         roundness,
-        colors: { primary, surface, text },
+        colors: { surface, text, primary },
       },
     } = this.props;
     const { total } = this.state;
@@ -74,28 +78,40 @@ class Quiz extends Component {
                 }}
                 style={[styles.cardContainer]}
               >
-                <TouchableOpacity
-                  activeOpacity={1}
+                <View
                   style={[
                     Styles.flipCard,
                     { backgroundColor: dark ? surface : frontColor, borderRadius: roundness },
                   ]}
-                  onPress={() => this[`card${index}`].flip()}
                 >
                   <Title style={{ color: dark ? frontColor : text }}>Question:</Title>
-                  <Paragraph style={styles.paragraph}>{question}</Paragraph>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  activeOpacity={1}
+                  <ScrollView style={styles.paragraphScroller}>
+                    <Paragraph style={styles.paragraph}>{question}</Paragraph>
+                  </ScrollView>
+                  <Button
+                    icon={flipIcon}
+                    uppercase={Platform.OS === 'android'}
+                    onPress={this.flipCard}
+                    children="Show Answer"
+                  />
+                </View>
+                <View
                   style={[
                     Styles.flipCard,
                     { backgroundColor: dark ? surface : backColor, borderRadius: roundness },
                   ]}
-                  onPress={() => this[`card${index}`].flip()}
                 >
                   <Title style={{ color: dark ? backColor : text }}>Answer:</Title>
-                  <Paragraph style={styles.paragraph}>{answer}</Paragraph>
-                </TouchableOpacity>
+                  <ScrollView style={styles.paragraphScroller}>
+                    <Paragraph style={styles.paragraph}>{answer}</Paragraph>
+                  </ScrollView>
+                  <Button
+                    icon={flipIcon}
+                    uppercase={Platform.OS === 'android'}
+                    onPress={this.flipCard}
+                    children="Show Question"
+                  />
+                </View>
               </CardFlip>
             );
           })}
@@ -106,8 +122,8 @@ class Quiz extends Component {
             size={30}
             color={surface}
             style={[styles.flipBtn, { backgroundColor: primary }]}
-            icon="rotate-3d-variant"
-            onPress={() => this[`card${total}`].flip()}
+            icon={flipIcon}
+            onPress={this.flipCard}
           />
           <AnswerBtn correct onPress={() => this.swiper.swipeRight()} />
         </View>
@@ -143,6 +159,8 @@ const AnswerBtn = ({ correct, onPress }) => {
   return <IconButton {...props} onPress={onPress} />;
 };
 
+const flipIcon = 'rotate-3d-variant';
+
 const styles = StyleSheet.create({
   progressBarContainer: {
     paddingHorizontal: 20,
@@ -158,10 +176,13 @@ const styles = StyleSheet.create({
   cardContainer: {
     ...Styles.flipCardContainer,
     height: Styles.flipCardContainer.width,
+    padding: 20,
+  },
+  paragraphScroller: {
+    flex: 1,
   },
   paragraph: {
     fontSize: 18,
-    paddingHorizontal: 20,
   },
   actionBtnContainer: {
     flexDirection: 'row',

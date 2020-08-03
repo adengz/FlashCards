@@ -12,6 +12,7 @@ const Styles = StyleSheet.create({
     height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
+    padding: 10,
     elevation: 4,
   },
   deckTitleContainer: {
