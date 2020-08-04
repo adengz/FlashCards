@@ -40,7 +40,7 @@ const Loader = () => {
   const { statusBar } = theme.colors;
 
   if (!ready) {
-    return <ActivityIndicator size="large" theme={theme} />;
+    return <ActivityIndicator style={{ flex: 1 }} size="large" theme={theme} />;
   }
 
   return (

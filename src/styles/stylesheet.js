@@ -13,7 +13,7 @@ const Styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 10,
-    elevation: 4,
+    elevation: 2,
   },
   deckTitleContainer: {
     flexDirection: 'row',
