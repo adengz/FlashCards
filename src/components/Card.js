@@ -111,7 +111,6 @@ export default function Card() {
                 },
               ]}
               multiline
-              maxLength={500}
               onChangeText={(value) => setDisplayedQuestion(value)}
               value={displayedQuestion}
               editable={editable}
@@ -131,7 +130,6 @@ export default function Card() {
                 },
               ]}
               multiline
-              maxLength={500}
               onChangeText={(value) => setDisplayedAnswer(value)}
               value={displayedAnswer}
               editable={editable}
