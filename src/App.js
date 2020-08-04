@@ -1,18 +1,47 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'react-native';
-import { Provider as PaperProvider } from 'react-native-paper';
+import { ActivityIndicator, Provider as PaperProvider } from 'react-native-paper';
 import { createStore, applyMiddleware } from 'redux';
-import { Provider as StoreProvider, useSelector } from 'react-redux';
+import { Provider as StoreProvider, useSelector, useDispatch } from 'react-redux';
 import logger from 'redux-logger';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
 import reducer from './redux/reducers';
 import StackNavigator from './navigators/StackNavigator';
+import { receiveSettings } from './redux/actions/settings';
+import { fetchSettingsAsync, initiateSettingsAsync } from './utils/settings';
 import { darkTheme, lightTheme } from './styles/themes';
 
+const store = createStore(reducer, applyMiddleware(logger));
+
+export default function App() {
+  return (
+    <StoreProvider store={store}>
+      <Loader />
+    </StoreProvider>
+  );
+}
+
 const Loader = () => {
-  const { dark } = useSelector(({ settings }) => settings);
-  const theme = dark ? darkTheme : lightTheme;
+  const [ready, setReady] = useState(false);
+  const currSettings = useSelector(({ settings }) => settings);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    fetchSettingsAsync().then((cachedSettings) => {
+      if (cachedSettings === null) {
+        initiateSettingsAsync(currSettings);
+      } else {
+        dispatch(receiveSettings(cachedSettings));
+      }
+      setReady(true);
+    });
+  }, []);
+
+  const theme = currSettings.dark ? darkTheme : lightTheme;
   const { statusBar } = theme.colors;
+
+  if (!ready) {
+    return <ActivityIndicator size="large" theme={theme} />;
+  }
 
   return (
     <PaperProvider theme={theme}>
@@ -21,15 +50,3 @@ const Loader = () => {
     </PaperProvider>
   );
 };
-
-const store = createStore(reducer, applyMiddleware(logger));
-
-export default function App() {
-  return (
-    <StoreProvider store={store}>
-      <SafeAreaProvider>
-        <Loader />
-      </SafeAreaProvider>
-    </StoreProvider>
-  );
-}
