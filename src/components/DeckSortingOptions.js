@@ -2,6 +2,7 @@ import React from 'react';
 import { useTheme, Portal, Modal, RadioButton } from 'react-native-paper';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateDeckSorting } from '../redux/actions/settings';
+import { updateDeckSortingAsync } from '../utils/settings';
 
 export default function DeckSortingOptions({ visible, hide }) {
   const { by } = useSelector(({ settings }) => settings.sortDecks);
@@ -13,7 +14,7 @@ export default function DeckSortingOptions({ visible, hide }) {
   } = useTheme();
 
   const select = (value) => {
-    // persist storage
+    updateDeckSortingAsync(value);
     dispatch(updateDeckSorting(value));
     hide();
   };

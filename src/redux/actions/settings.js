@@ -4,7 +4,7 @@ export const REVERSE_DECK_ORDER = 'REVERSE_DECK_ORDER';
 export const UPDATE_DECK_SORTING = 'UPDATE_DECK_SORTING';
 
 export const receiveSettings = (settings) => ({
-  type: receiveSettings,
+  type: RECEIVE_SETTINGS,
   settings,
 });
 

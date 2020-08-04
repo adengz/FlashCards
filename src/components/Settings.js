@@ -3,6 +3,7 @@ import { View, ScrollView, StyleSheet } from 'react-native';
 import { useTheme, List, Switch, Divider } from 'react-native-paper';
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleDark } from '../redux/actions/settings';
+import { toggleDarkAsync } from '../utils/settings';
 import Styles from '../styles/stylesheet';
 
 export default function Settings() {
@@ -12,6 +13,7 @@ export default function Settings() {
   const { surface } = useTheme().colors;
 
   const switchDark = () => {
+    toggleDarkAsync();
     dispatch(toggleDark());
   };
 

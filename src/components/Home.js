@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useHeaderHeight } from '@react-navigation/stack';
 import { useSelector, useDispatch } from 'react-redux';
 import { reverseDeckOrder } from '../redux/actions/settings';
+import { reverseDeckOrderAsync } from '../utils/settings';
 import { MoreBtn } from './HeaderButtons';
 import DeckList from './DeckList';
 import NewDeck from './NewDeck';
@@ -23,7 +24,7 @@ export default function Home() {
   const headerHeight = useHeaderHeight();
 
   const toggleOrder = () => {
-    // persist storage
+    reverseDeckOrderAsync();
     dispatch(reverseDeckOrder());
   };
 
