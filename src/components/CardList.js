@@ -1,4 +1,4 @@
-import React, { forwardRef, useState, useImperativeHandle } from 'react';
+import React, { forwardRef, useState, useImperativeHandle, useEffect } from 'react';
 import { Animated, Dimensions, View, StyleSheet } from 'react-native';
 import { useTheme, List, Checkbox, Divider } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
@@ -11,6 +11,7 @@ import Styles from '../styles/stylesheet';
 import { darkGray, lightGray, white } from '../styles/palette';
 
 const rowTranslateAnimatedValues = {};
+const checkBoxAnimatedValue = new Animated.Value(0);
 
 const CardList = forwardRef((props, ref) => {
   const { id, cardsCheckable, checkedCardsCount, setCheckedCardsCount } = props;
@@ -22,6 +23,7 @@ const CardList = forwardRef((props, ref) => {
     Object.fromEntries(cardsInDeck.map((item) => [item.id, false]))
   );
   const [animationIsRunning, setAnimationIsRunning] = useState(false);
+  // const [checkBoxDisplay, setCheckBoxDisplay] = useState('none');
 
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -82,9 +84,65 @@ const CardList = forwardRef((props, ref) => {
     },
   }));
 
+  useEffect(() => {
+    Animated.timing(checkBoxAnimatedValue, {
+      toValue: cardsCheckable ? 1 : 0,
+      duration: 200,
+      useNativeDriver: false,
+    }).start();
+  }, [cardsCheckable]);
+
   if (typeof decks[id] === 'undefined') {
     return null;
   }
+
+  const renderItem = ({ item }) => {
+    const { id: cardId, question } = item;
+    return (
+      <Animated.View
+        style={{
+          height: rowTranslateAnimatedValues[cardId].interpolate({
+            inputRange: [0, 1],
+            outputRange: [0, 50],
+          }),
+        }}
+      >
+        <List.Item
+          style={[styles.shownItem, { backgroundColor: surface }]}
+          underlayColor={dark ? darkGray : lightGray}
+          title={question}
+          left={() => (
+            <Animated.View
+              style={{
+                width: checkBoxAnimatedValue.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [0, 34],
+                }),
+              }}
+            >
+              <Checkbox
+                color={primary}
+                uncheckedColor={surface}
+                status={checkedCards[cardId] ? 'checked' : 'unchecked'}
+                onPress={() => toggleCheckbox(cardId)}
+                style={{ display: cardsCheckable ? 'flex' : 'none' }}
+              />
+            </Animated.View>
+          )}
+          onPress={() => navigation.navigate('Card', { id, cardId })}
+          disabled={cardsCheckable}
+        />
+      </Animated.View>
+    );
+  };
+
+  const renderHiddenItem = () => (
+    <View style={styles.hiddenItem}>
+      <View style={styles.hiddenIcon}>
+        <MaterialCommunityIcons name="delete" color={white} size={24} />
+      </View>
+    </View>
+  );
 
   const onSwipeValueChange = (swipeData) => {
     const { key, value } = swipeData;
@@ -98,43 +156,8 @@ const CardList = forwardRef((props, ref) => {
       <SwipeListView
         data={cardsInDeck}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => {
-          const { id: cardId, question } = item;
-          return (
-            <Animated.View
-              style={{
-                height: rowTranslateAnimatedValues[cardId].interpolate({
-                  inputRange: [0, 1],
-                  outputRange: [0, 50],
-                }),
-              }}
-            >
-              <List.Item
-                style={[styles.shownItem, { backgroundColor: surface }]}
-                underlayColor={dark ? darkGray : lightGray}
-                title={question}
-                left={() => (
-                  <View style={{ display: cardsCheckable ? 'flex' : 'none' }}>
-                    <Checkbox
-                      color={primary}
-                      status={checkedCards[cardId] ? 'checked' : 'unchecked'}
-                      onPress={() => toggleCheckbox(cardId)}
-                    />
-                  </View>
-                )}
-                onPress={() => navigation.navigate('Card', { id, cardId })}
-                disabled={cardsCheckable}
-              />
-            </Animated.View>
-          );
-        }}
-        renderHiddenItem={() => (
-          <View style={styles.hiddenItem}>
-            <View style={styles.hiddenIcon}>
-              <MaterialCommunityIcons name="delete" color={white} size={24} />
-            </View>
-          </View>
-        )}
+        renderItem={renderItem}
+        renderHiddenItem={renderHiddenItem}
         ListHeaderComponent={Divider}
         ItemSeparatorComponent={Divider}
         ListFooterComponent={Divider}
