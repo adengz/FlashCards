@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { View, TextInput, SafeAreaView, StyleSheet, Platform } from 'react-native';
+import { View, Platform, TextInput, SafeAreaView, StyleSheet } from 'react-native';
 import { useTheme, Menu, IconButton, Divider, Text, Button } from 'react-native-paper';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { HeaderBackButton } from '@react-navigation/stack';
@@ -108,7 +108,7 @@ export default function Deck() {
               />
               <Menu.Item
                 title="Select cards"
-                icon={`checkbox-multiple-marked${OS === 'ios' ? '-circle-outline' : ''}`}
+                icon={`checkbox-multiple-marked${Platform.OS === 'ios' ? '-circle-outline' : ''}`}
                 onPress={() => {
                   toggleMoreMenu();
                   setCardsCheckable(true);
@@ -201,7 +201,5 @@ const styles = StyleSheet.create({
 const bottomActionBtnProps = {
   style: [Styles.bottomActionBtn, { flex: 1 }],
   labelStyle: { fontSize: 18 },
-  uppercase: OS === 'android',
+  uppercase: Platform.OS === 'android',
 };
-
-const { OS } = Platform;
