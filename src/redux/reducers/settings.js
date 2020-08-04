@@ -1,4 +1,9 @@
-import { TOGGLE_DARK, REVERSE_DECK_ORDER, UPDATE_DECK_SORTING } from '../actions/settings';
+import {
+  RECEIVE_SETTINGS,
+  TOGGLE_DARK,
+  REVERSE_DECK_ORDER,
+  UPDATE_DECK_SORTING,
+} from '../actions/settings';
 
 const defaultState = {
   dark: false,
@@ -10,6 +15,8 @@ const defaultState = {
 
 export default function settings(state = defaultState, action) {
   switch (action.type) {
+    case RECEIVE_SETTINGS:
+      return action.settings;
     case TOGGLE_DARK:
       return {
         ...state,
