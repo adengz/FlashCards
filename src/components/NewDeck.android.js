@@ -8,8 +8,9 @@ import Styles from '../styles/stylesheet';
 
 export default function NewDeckAndroid() {
   const [typedTitle, setTypedTitle] = useState('');
-  const { primary } = useTheme().colors;
+
   const dispatch = useDispatch();
+  const { primary } = useTheme().colors;
 
   const submit = () => {
     const title = typedTitle.trim();
