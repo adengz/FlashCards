@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { View, TextInput, SafeAreaView, StyleSheet, Platform } from 'react-native';
 import { useTheme, Menu, IconButton, Divider, Text, Button } from 'react-native-paper';
 import { useRoute, useNavigation } from '@react-navigation/native';
@@ -25,9 +25,10 @@ export default function Deck() {
   const [titleEditable, setTitleEditable] = useState(false);
   const [cardsCheckable, setCardsCheckable] = useState(false);
   const [checkedCardsCount, setCheckedCardsCount] = useState(0);
-  const { primary } = useTheme().colors;
+
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const { primary } = useTheme().colors;
 
   const toggleMoreMenu = () => {
     setMoreMenuVisible(!moreMenuVisible);

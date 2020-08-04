@@ -9,6 +9,7 @@ import { gray } from '../styles/palette';
 
 export default function NewDeckIOS() {
   const [typedTitle, setTypedTitle] = useState('');
+
   const dispatch = useDispatch();
   const {
     roundness,

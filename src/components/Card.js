@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, TextInput, StyleSheet } from 'react-native';
 import { useTheme, Card as PaperCard, Title, IconButton } from 'react-native-paper';
 import { useRoute, useNavigation } from '@react-navigation/native';
@@ -21,6 +21,7 @@ export default function Card() {
   const [displayedQuestion, setDisplayedQuestion] = useState(currQuestion);
   const [displayedAnswer, setDisplayedAnswer] = useState(currAnswer);
   const [editable, setEditable] = useState(false);
+
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const headerHeight = useHeaderHeight();

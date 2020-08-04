@@ -17,9 +17,11 @@ const CardList = forwardRef((props, ref) => {
   const { cards, decks } = useSelector(({ data }) => data);
   const cardsInDeck =
     typeof decks[id] === 'undefined' ? [] : decks[id].cards.map((cardId) => cards[cardId]);
+
   const [checkedCards, setCheckedCards] = useState(
     Object.fromEntries(cardsInDeck.map((item) => [item.id, false]))
   );
+  const [animationIsRunning, setAnimationIsRunning] = useState(false);
 
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -27,7 +29,6 @@ const CardList = forwardRef((props, ref) => {
     dark,
     colors: { primary, surface },
   } = useTheme();
-  const [animationIsRunning, setAnimationIsRunning] = useState(false);
 
   cardsInDeck.forEach((item) => {
     rowTranslateAnimatedValues[item.id] = new Animated.Value(1);

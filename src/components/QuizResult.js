@@ -9,6 +9,7 @@ import { green } from '../styles/palette';
 export default function QuizResult({ total, correct, startOver }) {
   const navigation = useNavigation();
   const { surface } = useTheme().colors;
+
   const percent = Math.round((correct / total) * 100);
 
   return (

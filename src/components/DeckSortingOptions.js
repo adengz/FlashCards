@@ -4,12 +4,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import { updateDeckSorting } from '../redux/actions/settings';
 
 export default function DeckSortingOptions({ visible, hide }) {
+  const { by } = useSelector(({ settings }) => settings.sortDecks);
+
+  const dispatch = useDispatch();
   const {
     roundness,
     colors: { surface, primary },
   } = useTheme();
-  const { by } = useSelector(({ settings }) => settings.sortDecks);
-  const dispatch = useDispatch();
 
   const select = (value) => {
     // persist storage

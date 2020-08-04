@@ -13,13 +13,14 @@ import Styles from '../styles/stylesheet';
 import { white } from '../styles/palette';
 
 export default function Home() {
+  const { descending } = useSelector(({ settings }) => settings.sortDecks);
+
   const [moreMenuVisible, setMoreMenuVisible] = useState(false);
   const [sortingOptionsVisible, setSortingOptionsVisible] = useState(false);
 
   const navigation = useNavigation();
-  const headerHeight = useHeaderHeight();
-  const { descending } = useSelector(({ settings }) => settings.sortDecks);
   const dispatch = useDispatch();
+  const headerHeight = useHeaderHeight();
 
   const toggleOrder = () => {
     // persist storage
@@ -67,7 +68,7 @@ export default function Home() {
       behavior={Platform.OS === 'ios' ? 'padding' : null}
       keyboardVerticalOffset={headerHeight}
     >
-      <DeckList navigation={navigation} />
+      <DeckList />
       <NewDeck />
       <DeckSortingOptions
         visible={sortingOptionsVisible}

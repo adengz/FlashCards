@@ -7,6 +7,7 @@ import Styles from '../styles/stylesheet';
 
 export default function Settings() {
   const { dark } = useSelector(({ settings }) => settings);
+
   const dispatch = useDispatch();
   const { surface } = useTheme().colors;
 
