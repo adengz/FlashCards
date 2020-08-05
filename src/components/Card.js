@@ -141,9 +141,9 @@ export default function Card() {
         </PaperCard.Content>
         <IconButton
           style={styles.deleteBtn}
-          icon={typeof cardId === 'undefined' ? '' : 'delete'}
+          icon="delete"
           size={30}
-          color="red"
+          color={typeof cardId === 'undefined' ? surface : 'red'}
           disabled={editable}
           onPress={removeCard}
         />
