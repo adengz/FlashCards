@@ -5,6 +5,7 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 import { HeaderBackButton } from '@react-navigation/stack';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateDeckTitle, deleteDeck } from '../redux/actions/data';
+import { updateDeckTitleAsync, deleteDeckAsync } from '../utils/data';
 import { CancelBtn, SaveBtn, MoreBtn } from './HeaderButtons';
 import CardList from './CardList';
 import { createTwoButtonnAlert } from '../utils/alerts';
@@ -46,8 +47,9 @@ export default function Deck() {
     if (title === '') {
       setDisplayedTitle(currTitle);
     } else if (title !== currTitle) {
-      // persist storage
-      dispatch(updateDeckTitle({ id, title }));
+      const deck = { id, title };
+      updateDeckTitleAsync(deck);
+      dispatch(updateDeckTitle(deck));
     }
     setTitleEditable(false);
   };
@@ -59,7 +61,7 @@ export default function Deck() {
       confirmText: 'Confirm',
       confirmOnPress: () => {
         navigation.navigate('Home');
-        // persist storage
+        deleteDeckAsync(id);
         dispatch(deleteDeck(id));
       },
     });

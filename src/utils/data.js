@@ -2,8 +2,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 const DATA_STORAGE_KEY = '@FlashCards:data';
 
-export const clearDataAsync = async () => {
-  return AsyncStorage.setItem(DATA_STORAGE_KEY, JSON.stringify({ decks: {}, cards: {} }));
+const updateDataAsync = async (data) => {
+  return AsyncStorage.setItem(DATA_STORAGE_KEY, JSON.stringify(data));
 };
 
 export const fetchDataAsync = async () => {
@@ -11,19 +11,19 @@ export const fetchDataAsync = async () => {
   return JSON.parse(str);
 };
 
-const updateDataAsync = async (data) => {
-  return AsyncStorage.mergeItem(DATA_STORAGE_KEY, JSON.stringify(data));
+export const clearDataAsync = async () => {
+  return updateDataAsync({ decks: {}, cards: {} });
 };
 
 export const addDeckAsync = async ({ id, title, timestamp }) => {
   const data = await fetchDataAsync();
-  data[id] = { id, title, timestamp, cards: [] };
+  data.decks[id] = { id, title, timestamp, cards: [] };
   return updateDataAsync(data);
 };
 
 export const updateDeckTitleAsync = async ({ id, title }) => {
   const data = await fetchDataAsync();
-  data[id].title = title;
+  data.decks[id].title = title;
   return updateDataAsync(data);
 };
 
