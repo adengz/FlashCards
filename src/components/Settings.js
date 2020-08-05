@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, ScrollView, StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 import { useTheme, List, Switch, Divider } from 'react-native-paper';
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleDark } from '../redux/actions/settings';
@@ -37,28 +37,26 @@ export default function Settings() {
   };
 
   return (
-    <View style={Styles.mainContainer}>
-      <ScrollView>
-        <List.Section>
-          <List.Subheader>Appearances</List.Subheader>
-          <List.Item
-            style={styles.item}
-            title="Dark Mode"
-            right={() => <Switch value={dark} onChange={switchDark} />}
-          />
-        </List.Section>
-        <Divider />
-        <List.Section>
-          <List.Subheader>DANGER ZONE</List.Subheader>
-          <List.Item
-            style={styles.item}
-            titleStyle={styles.titleDanger}
-            title="CLEAR DATA"
-            onPress={pressClear}
-          />
-        </List.Section>
-      </ScrollView>
-    </View>
+    <ScrollView style={Styles.mainContainer}>
+      <List.Section>
+        <List.Subheader>Appearances</List.Subheader>
+        <List.Item
+          style={styles.item}
+          title="Dark Mode"
+          right={() => <Switch value={dark} onChange={switchDark} />}
+        />
+      </List.Section>
+      <Divider />
+      <List.Section>
+        <List.Subheader>DANGER ZONE</List.Subheader>
+        <List.Item
+          style={styles.item}
+          titleStyle={styles.titleDanger}
+          title="CLEAR DATA"
+          onPress={pressClear}
+        />
+      </List.Section>
+    </ScrollView>
   );
 }
 
