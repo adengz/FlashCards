@@ -17,29 +17,18 @@ const updateSettingsAsync = async (settings) => {
 
 export const toggleDarkAsync = async () => {
   const settings = await fetchSettingsAsync();
-  return updateSettingsAsync({ ...settings, dark: !settings.dark });
+  settings.dark = !settings.dark;
+  return updateSettingsAsync(settings);
 };
 
 export const reverseDeckOrderAsync = async () => {
   const settings = await fetchSettingsAsync();
-  const newSettings = {
-    ...settings,
-    sortDecks: {
-      ...settings.sortDecks,
-      descending: !settings.sortDecks.descending,
-    },
-  };
-  return updateSettingsAsync(newSettings);
+  settings.sortDecks.descending = !settings.sortDecks.descending;
+  return updateSettingsAsync(settings);
 };
 
 export const updateDeckSortingAsync = async (by) => {
   const settings = await fetchSettingsAsync();
-  const newSettings = {
-    ...settings,
-    sortDecks: {
-      ...settings.sortDecks,
-      by,
-    },
-  };
-  return updateSettingsAsync(newSettings);
+  settings.sortDecks.by = by;
+  return updateSettingsAsync(settings);
 };
