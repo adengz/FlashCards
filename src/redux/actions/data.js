@@ -1,3 +1,4 @@
+export const RECEIVE_DATA = 'RECEIVE_DATA';
 export const ADD_DECK = 'ADD_DECK';
 export const UPDATE_DECK_TITLE = 'UPDATE_DECK_TITLE';
 export const DELETE_DECK = 'DELETE_DECK';
@@ -5,6 +6,11 @@ export const ADD_CARD = 'ADD_CARD';
 export const UPDATE_CARD = 'UPDATE_CARD';
 export const DELETE_CARDS = 'DELETE_CARDS';
 export const CLEAR_DATA = 'CLEAR_DATA';
+
+export const receiveData = (data) => ({
+  type: RECEIVE_DATA,
+  data,
+});
 
 export const addDeck = ({ id, title, timestamp }) => ({
   type: ADD_DECK,

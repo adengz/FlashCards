@@ -1,4 +1,5 @@
 import {
+  RECEIVE_DATA,
   ADD_DECK,
   UPDATE_DECK_TITLE,
   DELETE_DECK,
@@ -7,10 +8,13 @@ import {
   DELETE_CARDS,
   CLEAR_DATA,
 } from '../actions/data';
-import mockData from '../../utils/mock';
 
-export default function data(state = mockData, action) {
+const defaultState = { decks: {}, cards: {} };
+
+export default function data(state = defaultState, action) {
   switch (action.type) {
+    case RECEIVE_DATA:
+      return action.data;
     case ADD_DECK: {
       const { id, title, timestamp } = action;
       return {
