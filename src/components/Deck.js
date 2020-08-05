@@ -29,7 +29,7 @@ export default function Deck() {
 
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const { primary } = useTheme().colors;
+  const { primary, text, background } = useTheme().colors;
 
   const toggleMoreMenu = () => {
     setMoreMenuVisible(!moreMenuVisible);
@@ -146,10 +146,10 @@ export default function Deck() {
             onSubmitEditing={saveNewTitle}
           />
         </ScrollView>
-        <Text style={styles.stats}>
-          {cardsCheckable && `${checkedCardsCount} of\n`}
-          {getFormattedStats(totalCards.length)}
+        <Text style={[styles.checkedCount, { color: cardsCheckable ? text : background }]}>
+          {`${checkedCardsCount}/`}
         </Text>
+        <Text>{getFormattedStats(totalCards.length)}</Text>
       </View>
       <CardList
         ref={cardList}
@@ -200,8 +200,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 0,
     marginHorizontal: 0,
   },
-  stats: {
-    paddingLeft: 10,
+  checkedCount: {
+    width: 40,
     textAlign: 'right',
   },
 });
