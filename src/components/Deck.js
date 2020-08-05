@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { View, Platform, TextInput, SafeAreaView, StyleSheet } from 'react-native';
+import { View, Platform, ScrollView, TextInput, SafeAreaView, StyleSheet } from 'react-native';
 import { useTheme, Menu, IconButton, Divider, Text, Button } from 'react-native-paper';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { HeaderBackButton } from '@react-navigation/stack';
@@ -135,17 +135,19 @@ export default function Deck() {
   return (
     <View style={Styles.mainContainer}>
       <View style={styles.deckTitleContainer}>
-        <TextInput
-          ref={titleBox}
-          style={[styles.deckTitleInput, { color: primary }]}
-          editable={titleEditable}
-          value={displayedTitle}
-          selectTextOnFocus
-          onChangeText={(value) => setDisplayedTitle(value)}
-          onSubmitEditing={saveNewTitle}
-        />
+        <ScrollView style={styles.deckTitleScroller} horizontal>
+          <TextInput
+            ref={titleBox}
+            style={[styles.deckTitleInput, { color: primary }]}
+            editable={titleEditable}
+            value={displayedTitle}
+            selectTextOnFocus
+            onChangeText={(value) => setDisplayedTitle(value)}
+            onSubmitEditing={saveNewTitle}
+          />
+        </ScrollView>
         <Text style={styles.stats}>
-          {cardsCheckable && `${checkedCardsCount} / `}
+          {cardsCheckable && `${checkedCardsCount} of\n`}
           {getFormattedStats(totalCards.length)}
         </Text>
       </View>
@@ -189,6 +191,9 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     paddingTop: 10,
   },
+  deckTitleScroller: {
+    flex: 1,
+  },
   deckTitleInput: {
     ...Styles.deckTitleInput,
     fontSize: 40,
@@ -197,6 +202,7 @@ const styles = StyleSheet.create({
   },
   stats: {
     paddingLeft: 10,
+    textAlign: 'right',
   },
 });
 
