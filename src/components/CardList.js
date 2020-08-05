@@ -6,6 +6,7 @@ import { SwipeListView } from 'react-native-swipe-list-view';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { deleteCards } from '../redux/actions/data';
+import { deleteCardsAsync } from '../utils/data';
 import { createTwoButtonnAlert } from '../utils/alerts';
 import Styles from '../styles/stylesheet';
 import { darkGray, lightGray, white } from '../styles/palette';
@@ -23,7 +24,6 @@ const CardList = forwardRef((props, ref) => {
     Object.fromEntries(cardsInDeck.map((item) => [item.id, false]))
   );
   const [animationIsRunning, setAnimationIsRunning] = useState(false);
-  // const [checkBoxDisplay, setCheckBoxDisplay] = useState('none');
 
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -52,8 +52,9 @@ const CardList = forwardRef((props, ref) => {
         })
       )
     ).start(() => {
-      // persist storage
-      dispatch(deleteCards({ id, cardIds }));
+      const cardsToRemove = { id, cardIds };
+      deleteCardsAsync(cardsToRemove);
+      dispatch(deleteCards(cardsToRemove));
       setAnimationIsRunning(false);
     });
   };

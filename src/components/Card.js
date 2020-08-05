@@ -5,6 +5,7 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 import { HeaderBackButton, useHeaderHeight } from '@react-navigation/stack';
 import { useSelector, useDispatch } from 'react-redux';
 import { addCard, updateCard, deleteCards } from '../redux/actions/data';
+import { addCardAsync, updateCardAsync, deleteCardsAsync } from '../utils/data';
 import { CancelBtn, SaveBtn, EditBtn } from './HeaderButtons';
 import { getNewCardMetaData } from '../utils/helpers';
 import Styles from '../styles/stylesheet';
@@ -49,20 +50,22 @@ export default function Card() {
     const question = displayedQuestion.trim();
     const answer = displayedAnswer.trim();
     if (typeof cardId === 'undefined') {
-      const metaData = getNewCardMetaData();
-      navigation.setParams({ cardId: metaData.newCardId });
-      // persist storage
-      dispatch(addCard({ id, question, answer, ...metaData }));
+      const newCard = { ...getNewCardMetaData(), id, question, answer };
+      navigation.setParams({ cardId: newCard.newCardId });
+      addCardAsync(newCard);
+      dispatch(addCard(newCard));
     } else {
-      // persist storage
-      dispatch(updateCard({ cardId, question, answer }));
+      const card = { cardId, question, answer };
+      updateCardAsync(card);
+      dispatch(updateCard(card));
     }
   };
 
   const removeCard = () => {
     navigation.goBack();
-    // persist storage
-    dispatch(deleteCards({ id, cardIds: [cardId] }));
+    const card = { id, cardIds: [cardId] };
+    deleteCardsAsync(card);
+    dispatch(deleteCards(card));
   };
 
   useEffect(() => {
