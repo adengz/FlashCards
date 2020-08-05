@@ -7,7 +7,9 @@ import logger from 'redux-logger';
 import reducer from './redux/reducers';
 import StackNavigator from './navigators/StackNavigator';
 import { receiveSettings } from './redux/actions/settings';
+import { receiveData } from './redux/actions/data';
 import { fetchSettingsAsync, initiateSettingsAsync } from './utils/settings';
+import { fetchDataAsync, clearDataAsync } from './utils/data';
 import { darkTheme, lightTheme } from './styles/themes';
 
 const store = createStore(reducer, applyMiddleware(logger));
@@ -26,14 +28,27 @@ const Loader = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    fetchSettingsAsync().then((cachedSettings) => {
+    const fetchSettings = async () => {
+      const cachedSettings = await fetchSettingsAsync();
       if (cachedSettings === null) {
         initiateSettingsAsync(currSettings);
       } else {
         dispatch(receiveSettings(cachedSettings));
       }
-      setReady(true);
-    });
+    };
+
+    const fetchData = async () => {
+      const cachedData = await fetchDataAsync();
+      if (cachedData === null) {
+        clearDataAsync();
+      } else {
+        dispatch(receiveData(cachedData));
+      }
+    };
+
+    fetchSettings();
+    fetchData();
+    setReady(true);
   }, []);
 
   const theme = currSettings.dark ? darkTheme : lightTheme;
