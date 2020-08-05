@@ -102,7 +102,7 @@ export default function Card() {
       >
         <PaperCard.Content style={styles.content}>
           <Title style={styles.label}>Question:</Title>
-          <ScrollView style={styles.inputContainer}>
+          <ScrollView style={styles.inputScroller}>
             <TextInput
               ref={questionBox}
               style={[
@@ -122,7 +122,7 @@ export default function Card() {
         </PaperCard.Content>
         <PaperCard.Content style={styles.content}>
           <Title style={styles.label}>Answer:</Title>
-          <ScrollView style={styles.inputContainer}>
+          <ScrollView style={styles.inputScroller}>
             <TextInput
               style={[
                 styles.input,
@@ -162,8 +162,8 @@ const styles = StyleSheet.create({
   label: {
     textDecorationLine: 'underline',
   },
-  inputContainer: {
-    height: 150,
+  inputScroller: {
+    height: 70,
   },
   input: {
     paddingHorizontal: 10,
