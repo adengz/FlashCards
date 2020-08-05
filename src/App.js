@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'react-native';
-import { ActivityIndicator, Provider as PaperProvider } from 'react-native-paper';
+import { AppLoading } from 'expo';
+import { Provider as PaperProvider } from 'react-native-paper';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider as StoreProvider, useSelector, useDispatch } from 'react-redux';
 import logger from 'redux-logger';
@@ -55,7 +56,7 @@ const Loader = () => {
   const { statusBar } = theme.colors;
 
   if (!ready) {
-    return <ActivityIndicator style={{ flex: 1 }} size="large" theme={theme} />;
+    return <AppLoading />;
   }
 
   return (
