@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, TextInput, StyleSheet } from 'react-native';
+import { KeyboardAvoidingView, Platform, TextInput, StyleSheet } from 'react-native';
 import { useTheme, Card as PaperCard, Title, IconButton } from 'react-native-paper';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { HeaderBackButton, useHeaderHeight } from '@react-navigation/stack';
@@ -102,42 +102,40 @@ export default function Card() {
       >
         <PaperCard.Content style={styles.content}>
           <Title style={styles.label}>Question:</Title>
-          <ScrollView style={styles.inputScroller}>
-            <TextInput
-              ref={questionBox}
-              style={[
-                styles.input,
-                {
-                  backgroundColor: editable ? background : surface,
-                  color: text,
-                  borderRadius: roundness,
-                },
-              ]}
-              multiline
-              onChangeText={(value) => setDisplayedQuestion(value)}
-              value={displayedQuestion}
-              editable={editable}
-            />
-          </ScrollView>
+          <TextInput
+            ref={questionBox}
+            style={[
+              styles.input,
+              {
+                backgroundColor: editable ? background : surface,
+                color: text,
+                borderRadius: roundness,
+              },
+            ]}
+            textAlignVertical="top"
+            multiline
+            onChangeText={(value) => setDisplayedQuestion(value)}
+            value={displayedQuestion}
+            editable={editable}
+          />
         </PaperCard.Content>
         <PaperCard.Content style={styles.content}>
           <Title style={styles.label}>Answer:</Title>
-          <ScrollView style={styles.inputScroller}>
-            <TextInput
-              style={[
-                styles.input,
-                {
-                  backgroundColor: editable ? background : surface,
-                  color: text,
-                  borderRadius: roundness,
-                },
-              ]}
-              multiline
-              onChangeText={(value) => setDisplayedAnswer(value)}
-              value={displayedAnswer}
-              editable={editable}
-            />
-          </ScrollView>
+          <TextInput
+            style={[
+              styles.input,
+              {
+                backgroundColor: editable ? background : surface,
+                color: text,
+                borderRadius: roundness,
+              },
+            ]}
+            textAlignVertical="top"
+            multiline
+            onChangeText={(value) => setDisplayedAnswer(value)}
+            value={displayedAnswer}
+            editable={editable}
+          />
         </PaperCard.Content>
         <IconButton
           style={styles.deleteBtn}
@@ -162,10 +160,8 @@ const styles = StyleSheet.create({
   label: {
     textDecorationLine: 'underline',
   },
-  inputScroller: {
-    height: 70,
-  },
   input: {
+    height: 75,
     paddingHorizontal: 10,
     paddingVertical: 5,
     marginHorizontal: 5,
